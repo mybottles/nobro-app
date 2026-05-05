@@ -7,3 +7,6 @@ node_modules/
 # Claude Code: ignore session/worktree state, but track shared slash commands
 .claude/*
 !.claude/commands/
+
+# Pazarlama / bülten taslakları — repoya girmesin
+press/
