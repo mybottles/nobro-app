@@ -1,11 +1,12 @@
-const CACHE = 'nobro-v1';
+const CACHE = 'nobro-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './locales/en.json'
 ];
 
 self.addEventListener('install', (e) => {
@@ -38,6 +39,22 @@ self.addEventListener('fetch', (e) => {
           return res;
         })
         .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // Locale files: network-first so translation tweaks ship without bumping CACHE.
+  if (url.pathname.includes('/locales/') && url.pathname.endsWith('.json')) {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req))
     );
     return;
   }

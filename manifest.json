@@ -1,7 +1,7 @@
 {
   "name": "nobro.app",
   "short_name": "nobro",
-  "description": "İdman programı takibi",
+  "description": "Workout program tracker",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "background_color": "#0a0a0a",
   "theme_color": "#0a0a0a",
-  "lang": "tr",
+  "lang": "en",
   "dir": "ltr",
   "categories": ["fitness", "health", "lifestyle"],
   "icons": [

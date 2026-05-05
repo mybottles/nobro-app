@@ -1,0 +1,115 @@
+# nobro.app
+
+A static, installable PWA workout-program tracker. No build step, no framework, no bundler — just `index.html`, a service worker, a manifest, and per-locale JSON files. Open in a browser, get the next set, hit a button, repeat.
+
+Tagline: **no thinking. just lift.**
+
+## Layout
+
+```
+index.html          # the entire UI + app logic (single file, vanilla JS)
+manifest.json       # PWA manifest (lang="en")
+sw.js               # service worker (cache name + asset list)
+locales/
+  en.json           # canonical / fallback (UI strings only)
+  tr.json           # Turkish UI strings
+  ar.json bn.json es.json fr.json hi.json id.json
+  pt.json ru.json zh.json
+icon-*.png, icon.svg, apple-touch-icon.png
+```
+
+There is no package manager, no `node_modules`, no test runner. Serve the directory over HTTP (any static server) and the PWA works.
+
+## Dev preview
+
+The maintainer's dev environment serves `~/sites/projects/<project>/...` at `https://projects.bulut.cms/<project>/...`, so this project's filesystem locations map to live URLs:
+
+- Main branch (`~/sites/projects/idman/`) → `https://projects.bulut.cms/idman/`
+- Any worktree (`~/sites/projects/idman/.claude/worktrees/<name>/`) → `https://projects.bulut.cms/idman/.claude/worktrees/<name>/`
+
+Open `index.html` under that URL to exercise the actual PWA — service worker registration, locale `fetch()`s, browser language detection, the settings editor, and JSON import/export all need a real HTTP origin to work. `file://` will not.
+
+## How the app is structured
+
+`index.html` contains everything: CSS in `<style>`, the default workout program, the i18n runtime, today's-progress state machine, the modal logic, the program editor, and the service-worker bootstrap.
+
+State splits into two concerns, each in its own `localStorage` slot:
+
+- **Today's progress** (`idman_state_v1`): which exercise/set you're on, completed sets, start/finish timestamps. Scoped to the calendar day; a new day resets progress.
+- **The program itself** (`nobro_program_v1`): the user's customized workout. Absent until the user edits/imports a program — until then the in-memory `PROGRAM` is a deep clone of `DEFAULT_PROGRAM`.
+
+## The workout program is the dynamic content
+
+This is the core idea: **the program is content the user owns and edits, not localized UI**. It lives inline in English in `index.html` (`PUSH`, `PULL`, `LEGS_CORE` arrays composed into `DEFAULT_PROGRAM` keyed 1=Mon..7=Sun). Each entry is a flat shape:
+
+```js
+{ region: "Chest", name: "Flat DB Press", description: "...", set: 4, reps: "10", rest: 90 }
+```
+
+`reps` is a string so it can hold "Max", "60s", "30s", or a numeric count; `set` and `rest` are numbers.
+
+**Do not translate program content into the locale files.** The original is English, period. If a user wants Turkish exercise names, they edit them in Settings — and that becomes their personal program, stored in `localStorage`.
+
+### Editing — Settings modal
+
+The Settings modal *is* the program editor. Day pills (Mon–Sun) switch which day's array you're editing. Each exercise renders as a card with editable region/name/description/sets/reps/rest, plus ↑ ↓ × buttons. There's an `+ Add exercise` button per day. Save persists the draft to `nobro_program_v1`; Cancel discards the in-memory draft. The editor footer offers **Export JSON**, **Import JSON**, and **Reset to default**.
+
+### Import/export format
+
+```json
+{
+  "version": 1,
+  "days": {
+    "1": [ { "region": "...", "name": "...", "description": "...", "set": 4, "reps": "10", "rest": 90 } ],
+    "2": [...], "3": [...], "4": [...], "5": [...], "6": [...],
+    "7": []
+  }
+}
+```
+
+`isValidProgramDays()` enforces the shape on import (and on read from `localStorage`). Invalid stored data falls back to the default; invalid imports show a localized error.
+
+## i18n (UI strings only)
+
+- **Fallback locale: `en`.** The app must be fully usable in English; English is the source of truth for UI keys.
+- Supported locales: `en, tr, zh, hi, es, fr, ar, bn, ru, pt, id` (English fallback + the 10 most spoken languages worldwide; Turkish kept because the project's original strings were Turkish).
+- Detection: stored choice (`localStorage` → `nobro_locale`) → `navigator.languages` → first match in supported list → fallback `en`.
+- Each locale is a JSON file at `locales/{code}.json` with the same shape: `meta` (name + `dir`), `ui` (UI strings, `{var}` interpolation), `duration` (h/m/s format strings), `days_short` (8-element array, index 0 unused). **No `regions` or `exercises` blocks** — that content is not localized.
+- RTL: only `ar` declares `dir: "rtl"`; `<html dir>` is set from the loaded locale's `meta.dir`.
+- Static markup uses `data-i18n="key"` and `data-i18n-aria-label="key"`. JS-rendered content goes through `t(key, vars)`; keys missing in the active locale fall back to `en`, then to the literal key.
+
+### Adding or changing translations
+
+1. **Adding a UI string:** add the key to `locales/en.json` first, then to every other locale. If you skip a locale, the runtime falls back to `en` for that key — acceptable for a temporary gap, not for shipping.
+2. **Adding a new locale:**
+   - Drop `locales/{code}.json` matching the shape of `en.json`.
+   - Append the code to `SUPPORTED_LOCALES` in `index.html`.
+   - Bump `CACHE` in `sw.js` so existing installs refetch the locale list.
+
+## Service worker
+
+Versioned cache name (`nobro-vN`). On `activate`, old caches are deleted. The pre-cache list (`ASSETS`) includes the shell + `locales/en.json`; other locales are cached lazily on first fetch.
+
+Locale JSON requests are **network-first** (so translation fixes ship without a cache version bump); everything else is cache-first. If you change non-locale assets and want users to pick them up, bump `CACHE` in `sw.js`.
+
+## Conventions
+
+- Single-file UI: don't introduce a build step or split `index.html` into modules unless there's a real reason. The whole point is "open the file, see the app."
+- Don't put UI strings in JS. Add a key to the locales and use `t()`.
+- Don't add a UI string to only one locale. English first, then propagate.
+- The brand strings ("nobro", "no thinking. just lift.", "no noise. no ego. no bullshit.") are intentionally left in English across all locales — they are part of the brand, not copy.
+- The workout program is content, not UI: keep it inline in English, let the user edit it. Don't translate `region`, `name`, or `description` into the locale files.
+
+## Keep this file in sync
+
+**When you make a structural change, update this file in the same change.** Structural means:
+
+- Adding/removing files or top-level directories
+- Adding/removing a supported locale
+- Changing the locale JSON shape (new top-level section, renamed key family)
+- Changing where state is stored, the storage keys, or the day-reset semantics
+- Changing the program data shape, the import/export format, or `isValidProgramDays`'s contract
+- Changing the service-worker caching strategy or cache name scheme
+- Adding a build step, package manager, or framework
+
+Pure content edits (translation tweaks, default-program tweaks, copy fixes) do **not** require a CLAUDE.md update. The test: would a fresh contributor reading this file get a wrong picture of the project after your change? If yes, update it.
