@@ -4,7 +4,6 @@
   "description": "İdman programı takibi",
   "start_url": "./",
   "scope": "./",
-  "id": "/idman/",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen"],
   "orientation": "portrait",
