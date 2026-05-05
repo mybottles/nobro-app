@@ -4,9 +4,9 @@ node_modules/
 .env
 .env.local
 
-# Claude Code: ignore session/worktree state, but track shared slash commands
-.claude/*
-!.claude/commands/
+# Claude Code: kişisel klasör — slash komutları, worktree'ler, oturum durumu.
+# Hiçbiri repo'ya girmesin.
+.claude/
 
 # Pazarlama / bülten taslakları — repoya girmesin
 press/
