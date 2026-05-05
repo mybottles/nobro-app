@@ -3,3 +3,7 @@
 node_modules/
 .env
 .env.local
+
+# Claude Code: ignore session/worktree state, but track shared slash commands
+.claude/*
+!.claude/commands/
