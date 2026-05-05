@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="nobro.app — idman programı takibi">
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="nobro">
+<meta name="format-detection" content="telephone=no">
+
+<title>nobro.app</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    background: #0a0a0a;
+    color: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    overscroll-behavior: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  /* App bar */
+  .appbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    background: #0a0a0a;
+    border-bottom: 1px solid #161616;
+  }
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+  }
+  .logo-no {
+    color: #4ade80;
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.45);
+  }
+  .logo-bro { color: #d4d4d8; }
+  .logo-app {
+    color: #a1a1aa;
+    font-weight: 700;
+    font-size: 0.85em;
+    margin-left: 1px;
+  }
+  .tagline {
+    font-size: 11px;
+    color: #a1a1aa;
+    letter-spacing: 0.3px;
+    font-weight: 500;
+  }
+  .appbar-actions {
+    display: flex;
+    gap: 4px;
+  }
+  .iconbtn {
+    background: none;
+    border: none;
+    color: #d4d4d8;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .iconbtn:active { background: #1a1a1a; color: #f0f0f0; }
+  .iconbtn svg { width: 22px; height: 22px; }
+
+  /* Content wrapper */
+  .content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+
+  .top {
+    font-size: 13px;
+    color: #b8b8c0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+  .bolge {
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .hareket {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .hareket-link, .hareket-link:visited {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dashed #333;
+  }
+  .hareket-link::after {
+    content: " ↗";
+    font-size: 0.4em;
+    color: #666;
+    vertical-align: super;
+    border-bottom: none;
+  }
+  .summary-row .name a, .summary-row .name a:visited {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dashed #333;
+  }
+  .hedef {
+    font-size: 20px;
+    color: #aaa;
+  }
+  .aciklama {
+    font-size: 15px;
+    color: #777;
+    max-width: 320px;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+  .timer {
+    font-size: 96px;
+    font-weight: 200;
+    font-variant-numeric: tabular-nums;
+    color: #4ade80;
+  }
+  .timer-label {
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 28px;
+    border: none;
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.05s, background 0.15s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-start { background: #4ade80; color: #0a0a0a; }
+  .btn-done { background: #f59e0b; color: #0a0a0a; }
+  .btn-skip {
+    background: transparent;
+    color: #666;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-skip:active { color: #999; }
+  .summary {
+    width: 100%;
+    max-width: 400px;
+  }
+  .summary h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #4ade80;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #222;
+    font-size: 15px;
+  }
+  .summary-row .name { color: #ddd; }
+  .summary-row .val { color: #888; font-variant-numeric: tabular-nums; }
+  .summary-total {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #333;
+    font-weight: 600;
+    color: #f0f0f0;
+  }
+  .empty {
+    text-align: center;
+    color: #888;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .empty .big { font-size: 48px; margin-bottom: 16px; }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #444;
+    margin-top: 16px;
+  }
+
+  /* Modal / bottom sheet */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .modal[hidden] { display: none; }
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-sheet {
+    position: relative;
+    background: #141414;
+    border-radius: 20px 20px 0 0;
+    padding: 8px 24px 24px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUp 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  }
+  .modal-grabber {
+    width: 36px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    margin: 0 auto 12px;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .modal-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f0f0f0;
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+  .modal-close:active { background: #1f1f1f; color: #f0f0f0; }
+  .modal-body {
+    color: #aaa;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 120px;
+  }
+  .modal-placeholder {
+    text-align: center;
+    color: #555;
+    padding: 32px 0;
+    font-size: 14px;
+  }
+  .manifesto {
+    text-align: center;
+    padding: 8px 0 16px;
+  }
+  .manifesto-pillars {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4ade80;
+    letter-spacing: 0.3px;
+    margin-bottom: 18px;
+  }
+  .manifesto p {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .manifesto .flow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #888;
+    font-size: 13px;
+    background: #1a1a1a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 4px;
+  }
+  .manifesto .quiet {
+    color: #666;
+    font-size: 12px;
+    margin-top: 18px;
+    font-style: italic;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="brand">
+    <div class="logo" aria-label="nobro.app">
+      <span class="logo-no">no</span><span class="logo-bro">bro</span><span class="logo-app">.app</span>
+    </div>
+    <div class="tagline">no thinking. just lift.</div>
+  </div>
+  <nav class="appbar-actions">
+    <button class="iconbtn" id="aboutBtn" aria-label="Hakkında" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+    </button>
+    <button class="iconbtn" id="settingsBtn" aria-label="Ayarlar" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div class="content">
+  <div class="top">
+    <span id="dayInfo"></span>
+    <span id="progress"></span>
+  </div>
+
+  <div class="main" id="main"></div>
+
+  <div id="bottom"></div>
+
+  <div class="footer" id="footer"></div>
+</div>
+
+<div class="modal" id="aboutModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal-grabber"></div>
+    <div class="modal-header">
+      <h2 id="aboutTitle">Hakkında</h2>
+      <button class="modal-close" data-close aria-label="Kapat" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="manifesto">
+        <div class="manifesto-pillars">no noise. no ego. no bullshit.</div>
+        <p>Düşünmek istemeyenler için bir dumbbell programı. Karar yorgunluğunu öldürür.</p>
+        <div class="flow">aç → sıradaki seti yap → kapat</div>
+        <p class="quiet">no thinking. just lift.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-grabber"></div>
+    <div class="modal-header">
+      <h2 id="settingsTitle">Ayarlar</h2>
+      <button class="modal-close" data-close aria-label="Kapat" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-placeholder">İçerik yakında.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// PROGRAM (01.10.2025 - 31.12.2025)
+// Pazartesi=1, Salı=2, Çarşamba=3, Perşembe=4, Cuma=5, Cumartesi=6, Pazar=7
+// ============================================
+
+const PUSH = [
+  { bolge: "Göğüs",    hareket: "Flat DB Press",       aciklama: "Yatık. Dirsekler 45°, kontrollü in.",       set: 4, tekrar: "10",  dinlenme: 90 },
+  { bolge: "Üst göğüs", hareket: "Incline DB Press",   aciklama: "30-45° eğim. Üst göğüs odaklı.",            set: 3, tekrar: "12",  dinlenme: 90 },
+  { bolge: "Alt göğüs", hareket: "Decline DB Press",   aciklama: "Aşağı eğim. Alt göğüs.",                    set: 3, tekrar: "10",  dinlenme: 90 },
+  { bolge: "Omuz",     hareket: "DB Shoulder Press",   aciklama: "Bar başın üstüne, dirsekler kilitlensin.",  set: 4, tekrar: "10",  dinlenme: 90 },
+  { bolge: "Yan omuz", hareket: "Lateral Raises",      aciklama: "Dirsekler hafif bükülü, yatay hizaya.",     set: 3, tekrar: "15",  dinlenme: 60 },
+  { bolge: "Ön omuz",  hareket: "Front Raises",        aciklama: "Düz öne, omuz hizasında dur.",              set: 3, tekrar: "12",  dinlenme: 60 },
+  { bolge: "Triceps",  hareket: "Skull Crushers",      aciklama: "Sırtüstü. Dirsekler sabit, sadece önkol.",  set: 3, tekrar: "12",  dinlenme: 60 },
+  { bolge: "Triceps",  hareket: "Overhead Triceps",    aciklama: "DB başın arkasına, dirsekler dar.",         set: 3, tekrar: "15",  dinlenme: 60 },
+  { bolge: "Triceps",  hareket: "Diamond Push-ups",    aciklama: "Eller elmas. Tükenene kadar.",              set: 3, tekrar: "Max", dinlenme: 60 },
+];
+
+const PULL = [
+  { bolge: "Sırt",       hareket: "Bent-Over Row",   aciklama: "Sırt düz, kalça arkaya. Karna doğru çek.",  set: 4, tekrar: "10",  dinlenme: 90 },
+  { bolge: "Sırt",       hareket: "Single-Arm Row",  aciklama: "Tek kol. Kürek kemiğini sık.",              set: 3, tekrar: "12",  dinlenme: 75 },
+  { bolge: "Sırt+Göğüs", hareket: "DB Pullover",     aciklama: "Sırtüstü. DB başın üstünden geriye.",       set: 3, tekrar: "15",  dinlenme: 75 },
+  { bolge: "Trapez",     hareket: "DB Shrugs",       aciklama: "Sadece omuz silkme, kollar gevşek.",        set: 4, tekrar: "15",  dinlenme: 60 },
+  { bolge: "Arka omuz",  hareket: "Rear Delt Flies", aciklama: "Eğil, kolları yana aç. Sıkıştır.",          set: 3, tekrar: "15",  dinlenme: 60 },
+  { bolge: "Biceps",     hareket: "Bicep Curls",     aciklama: "Dirsekler gövdede sabit.",                  set: 4, tekrar: "12",  dinlenme: 60 },
+  { bolge: "Biceps",     hareket: "Hammer Curls",    aciklama: "Nötr tutuş, çekiç gibi.",                   set: 3, tekrar: "15",  dinlenme: 60 },
+  { bolge: "Ön kol",     hareket: "Wrist Curls",     aciklama: "Bilek bükme. Avuç yukarı.",                 set: 3, tekrar: "20",  dinlenme: 45 },
+  { bolge: "Ön kol",     hareket: "Reverse Wrist",   aciklama: "Ters bilek bükme. Avuç aşağı.",             set: 3, tekrar: "20",  dinlenme: 45 },
+];
+
+const LEGS_CORE = [
+  { bolge: "Quad",      hareket: "Goblet Squats",   aciklama: "DB göğüste. Topuk yere basılı, kalça arkaya.", set: 4, tekrar: "12",  dinlenme: 90 },
+  { bolge: "Quad",      hareket: "Bulgarian Split", aciklama: "Arka ayak yüksekte. Tek bacak çömel.",         set: 3, tekrar: "12",  dinlenme: 75 },
+  { bolge: "Hamstring", hareket: "Romanian DL",     aciklama: "Kalçayı arkaya it, sırt düz, dizler hafif.",   set: 4, tekrar: "10",  dinlenme: 90 },
+  { bolge: "Bacak",     hareket: "Walking Lunges",  aciklama: "Yürüyerek hamle. Her bacak için.",             set: 3, tekrar: "12",  dinlenme: 75 },
+  { bolge: "Bacak",     hareket: "Step-ups",        aciklama: "Kasaya/sandalyeye çık-in. Her bacak için.",    set: 3, tekrar: "12",  dinlenme: 60 },
+  { bolge: "Baldır",    hareket: "Calf Raises",     aciklama: "Parmak ucuna kalk, kontrollü in.",             set: 4, tekrar: "20",  dinlenme: 45 },
+  { bolge: "Karın",     hareket: "Plank",           aciklama: "60 saniye tut. Vücut düz çizgi.",              set: 3, tekrar: "60s", dinlenme: 45 },
+  { bolge: "Oblik",     hareket: "Russian Twists",  aciklama: "Oturarak gövde sağ-sol döndür. 20 toplam.",    set: 3, tekrar: "20",  dinlenme: 45 },
+  { bolge: "Alt karın", hareket: "Leg Raises",      aciklama: "Sırtüstü. Bacakları kontrollü kaldır.",        set: 3, tekrar: "15",  dinlenme: 45 },
+  { bolge: "Oblik",     hareket: "Side Plank",      aciklama: "30 saniye tut. Her iki taraf için.",           set: 3, tekrar: "30s", dinlenme: 45 },
+];
+
+const PROGRAM = {
+  1: PUSH,        // Pazartesi
+  2: PULL,        // Salı
+  3: LEGS_CORE,   // Çarşamba
+  4: PUSH,        // Perşembe
+  5: PULL,        // Cuma
+  6: LEGS_CORE,   // Cumartesi
+  7: [],          // Pazar — dinlenme
+};
+// ============================================
+
+const STORAGE_KEY = 'idman_state_v1';
+
+function gunNo() {
+  const d = new Date().getDay();
+  return d === 0 ? 7 : d;
+}
+
+function bugunKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s.tarih === bugunKey()) return s;
+    }
+  } catch (e) {}
+  return {
+    tarih: bugunKey(),
+    gun: gunNo(),
+    hareketIdx: 0,
+    setIdx: 0,
+    setBitisleri: [],
+    baslangic: null,
+    bitis: null,
+  };
+}
+
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
+}
+
+let state = loadState();
+let timerInterval = null;
+let wakeLock = null;
+
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  } catch (e) {}
+}
+
+function releaseWakeLock() {
+  if (wakeLock) { wakeLock.release(); wakeLock = null; }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+});
+
+let audioCtx = null;
+function beep() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const dur = 0.6;
+    const now = audioCtx.currentTime;
+    [880, 1320].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0, now + i * 0.25);
+      gain.gain.linearRampToValueAtTime(0.3, now + i * 0.25 + 0.02);
+      gain.gain.linearRampToValueAtTime(0, now + i * 0.25 + dur);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(now + i * 0.25);
+      osc.stop(now + i * 0.25 + dur);
+    });
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+  } catch (e) {}
+}
+
+function fmt(secs) {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function fmtSure(ms) {
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  if (h > 0) return `${h}s ${m}d`;
+  return `${m}d ${s}s`;
+}
+
+const GUN_ADI = ['', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+
+function ytUrl(hareket) {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(hareket + ' form')}`;
+}
+
+function render() {
+  const main = document.getElementById('main');
+  const bottom = document.getElementById('bottom');
+  const dayInfo = document.getElementById('dayInfo');
+  const progress = document.getElementById('progress');
+  const footer = document.getElementById('footer');
+
+  const program = PROGRAM[state.gun] || [];
+  dayInfo.textContent = `${GUN_ADI[state.gun]} • Gün ${state.gun}`;
+  footer.textContent = '';
+
+  if (program.length === 0) {
+    progress.textContent = '';
+    main.innerHTML = `<div class="empty"><div class="big">😴</div>Bugün dinlenme.<br>Yarın ${GUN_ADI[state.gun === 7 ? 1 : state.gun + 1]}.</div>`;
+    bottom.innerHTML = '';
+    return;
+  }
+
+  if (state.hareketIdx >= program.length) {
+    progress.textContent = 'TAMAM';
+    renderOzet(program);
+    return;
+  }
+
+  const hareket = program[state.hareketIdx];
+  progress.textContent = `${state.hareketIdx + 1}/${program.length} • Set ${state.setIdx + 1}/${hareket.set}`;
+
+  main.innerHTML = `
+    <div class="bolge">${hareket.bolge}</div>
+    <div class="hareket"><a class="hareket-link" href="${ytUrl(hareket.hareket)}" target="_blank" rel="noopener">${hareket.hareket}</a></div>
+    <div class="hedef">${hareket.tekrar} tekrar × Set ${state.setIdx + 1}/${hareket.set}</div>
+    <div class="aciklama">${hareket.aciklama}</div>
+  `;
+
+  bottom.innerHTML = `<button class="btn btn-start" id="startBtn">BAŞLA</button>`;
+  document.getElementById('startBtn').addEventListener('click', onStart);
+}
+
+function onStart() {
+  if (!state.baslangic) {
+    state.baslangic = Date.now();
+  }
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  requestWakeLock();
+  saveState(state);
+
+  const program = PROGRAM[state.gun];
+  const hareket = program[state.hareketIdx];
+
+  const main = document.getElementById('main');
+  main.innerHTML = `
+    <div class="bolge">${hareket.bolge}</div>
+    <div class="hareket"><a class="hareket-link" href="${ytUrl(hareket.hareket)}" target="_blank" rel="noopener">${hareket.hareket}</a></div>
+    <div class="hedef">${hareket.tekrar} tekrar — Set ${state.setIdx + 1}/${hareket.set}</div>
+    <div class="timer-label">Set süresi</div>
+    <div class="timer" id="setTimer" style="color:#f59e0b;">0:00</div>
+  `;
+  document.getElementById('bottom').innerHTML = `<button class="btn btn-done" id="doneBtn">BİTTİ</button>`;
+  document.getElementById('doneBtn').addEventListener('click', onDone);
+
+  const setBaslangic = Date.now();
+  const setTimerEl = document.getElementById('setTimer');
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const gecen = Math.floor((Date.now() - setBaslangic) / 1000);
+    if (setTimerEl) setTimerEl.textContent = fmt(gecen);
+  }, 1000);
+}
+
+function onDone() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  const program = PROGRAM[state.gun];
+  const hareket = program[state.hareketIdx];
+
+  state.setBitisleri.push({
+    hareketIdx: state.hareketIdx,
+    hareket: hareket.hareket,
+    setIdx: state.setIdx,
+    ts: Date.now(),
+  });
+
+  state.setIdx++;
+  if (state.setIdx >= hareket.set) {
+    state.setIdx = 0;
+    state.hareketIdx++;
+  }
+
+  if (state.hareketIdx >= program.length) {
+    state.bitis = Date.now();
+    saveState(state);
+    render();
+    return;
+  }
+
+  saveState(state);
+  startDinlenme(hareket.dinlenme);
+}
+
+function startDinlenme(saniye) {
+  let kalan = saniye;
+  const main = document.getElementById('main');
+  const bottom = document.getElementById('bottom');
+
+  function tik() {
+    main.innerHTML = `
+      <div class="timer-label">Dinlenme</div>
+      <div class="timer">${fmt(kalan)}</div>
+      <div class="aciklama">Süre dolunca sıradaki set hazır.</div>
+    `;
+    bottom.innerHTML = `<button class="btn-skip" id="skipBtn">atla / şimdi devam et</button>`;
+    document.getElementById('skipBtn').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      render();
+    });
+  }
+
+  tik();
+  timerInterval = setInterval(() => {
+    kalan--;
+    if (kalan <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      beep();
+      render();
+      return;
+    }
+    tik();
+  }, 1000);
+}
+
+function renderOzet(program) {
+  const sayim = {};
+  state.setBitisleri.forEach(b => {
+    sayim[b.hareket] = (sayim[b.hareket] || 0) + 1;
+  });
+
+  const sure = state.bitis && state.baslangic ? state.bitis - state.baslangic : 0;
+  const toplamSet = state.setBitisleri.length;
+
+  let rows = '';
+  program.forEach(h => {
+    const yapilan = sayim[h.hareket] || 0;
+    rows += `<div class="summary-row"><span class="name"><a href="${ytUrl(h.hareket)}" target="_blank" rel="noopener">${h.hareket}</a></span><span class="val">${yapilan}/${h.set} set</span></div>`;
+  });
+
+  document.getElementById('main').innerHTML = `
+    <div class="summary">
+      <h2>✓ Bugün tamam</h2>
+      ${rows}
+      <div class="summary-row summary-total"><span class="name">Toplam set</span><span class="val">${toplamSet}</span></div>
+      <div class="summary-row"><span class="name">Süre</span><span class="val">${fmtSure(sure)}</span></div>
+    </div>
+  `;
+  document.getElementById('bottom').innerHTML = '';
+  document.getElementById('footer').innerHTML = `<a href="#" id="resetLink" style="color:#444;text-decoration:none;">sıfırla</a>`;
+  document.getElementById('resetLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm('Bugünün ilerlemesini sıfırla?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      state = loadState();
+      render();
+    }
+  });
+}
+
+window.addEventListener('beforeunload', () => {
+  if (timerInterval) clearInterval(timerInterval);
+  saveState(state);
+});
+
+// ============================================
+// Modal control
+// ============================================
+function openModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.hidden = false;
+}
+function closeModal(m) { m.hidden = true; }
+
+document.getElementById('aboutBtn').addEventListener('click', () => openModal('aboutModal'));
+document.getElementById('settingsBtn').addEventListener('click', () => openModal('settingsModal'));
+
+document.querySelectorAll('.modal').forEach((m) => {
+  m.querySelectorAll('[data-close]').forEach((el) => {
+    el.addEventListener('click', () => closeModal(m));
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal:not([hidden])').forEach(closeModal);
+  }
+});
+
+// ============================================
+// PWA — service worker
+// ============================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+render();
+requestWakeLock();
+</script>
+
+</body>
+</html>
