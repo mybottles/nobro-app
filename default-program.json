@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "days": {
+    "1": [
+      { "region": "Chest",        "name": "Flat DB Press",     "description": "Flat bench. Elbows at 45°, lower under control.",  "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Upper chest",  "name": "Incline DB Press",  "description": "30–45° incline. Upper chest focus.",               "set": 3, "reps": "12",  "rest": 90 },
+      { "region": "Lower chest",  "name": "Decline DB Press",  "description": "Decline bench. Lower chest.",                      "set": 3, "reps": "10",  "rest": 90 },
+      { "region": "Shoulders",    "name": "DB Shoulder Press", "description": "Press overhead, lock the elbows out.",             "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Side delts",   "name": "Lateral Raises",    "description": "Slight elbow bend, raise to shoulder height.",     "set": 3, "reps": "15",  "rest": 60 },
+      { "region": "Front delts",  "name": "Front Raises",      "description": "Raise straight forward, stop at shoulder height.", "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Triceps",      "name": "Skull Crushers",    "description": "Lying back. Elbows fixed, only forearms move.",    "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Triceps",      "name": "Overhead Triceps",  "description": "DB behind the head, elbows tucked in.",            "set": 3, "reps": "15",  "rest": 60 },
+      { "region": "Triceps",      "name": "Diamond Push-ups",  "description": "Hands in a diamond. Go to failure.",               "set": 3, "reps": "Max", "rest": 60 }
+    ],
+    "2": [
+      { "region": "Back",         "name": "Bent-Over Row",    "description": "Flat back, hips back. Pull toward the belly.", "set": 4, "reps": "10", "rest": 90 },
+      { "region": "Back",         "name": "Single-Arm Row",   "description": "One arm. Squeeze the shoulder blade.",         "set": 3, "reps": "12", "rest": 75 },
+      { "region": "Back + Chest", "name": "DB Pullover",      "description": "Lying back. DB arcs back over the head.",      "set": 3, "reps": "15", "rest": 75 },
+      { "region": "Traps",        "name": "DB Shrugs",        "description": "Just shrug the shoulders, arms relaxed.",      "set": 4, "reps": "15", "rest": 60 },
+      { "region": "Rear delts",   "name": "Rear Delt Flies",  "description": "Bent over, open arms wide. Squeeze.",          "set": 3, "reps": "15", "rest": 60 },
+      { "region": "Biceps",       "name": "Bicep Curls",      "description": "Elbows pinned at the sides.",                  "set": 4, "reps": "12", "rest": 60 },
+      { "region": "Biceps",       "name": "Hammer Curls",     "description": "Neutral grip, like swinging a hammer.",        "set": 3, "reps": "15", "rest": 60 },
+      { "region": "Forearms",     "name": "Wrist Curls",      "description": "Wrist curl. Palms up.",                        "set": 3, "reps": "20", "rest": 45 },
+      { "region": "Forearms",     "name": "Reverse Wrist",    "description": "Reverse wrist curl. Palms down.",              "set": 3, "reps": "20", "rest": 45 }
+    ],
+    "3": [
+      { "region": "Quads",      "name": "Goblet Squats",   "description": "DB at the chest. Heels down, hips back.",      "set": 4, "reps": "12",  "rest": 90 },
+      { "region": "Quads",      "name": "Bulgarian Split", "description": "Rear foot elevated. Single-leg squat.",        "set": 3, "reps": "12",  "rest": 75 },
+      { "region": "Hamstrings", "name": "Romanian DL",     "description": "Push hips back, flat back, soft knees.",       "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Legs",       "name": "Walking Lunges",  "description": "Lunges forward. Each leg.",                    "set": 3, "reps": "12",  "rest": 75 },
+      { "region": "Legs",       "name": "Step-ups",        "description": "Step up onto a box/chair. Each leg.",          "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Calves",     "name": "Calf Raises",     "description": "Up on the toes, lower under control.",         "set": 4, "reps": "20",  "rest": 45 },
+      { "region": "Abs",        "name": "Plank",           "description": "Hold 60 seconds. Body in a straight line.",    "set": 3, "reps": "60s", "rest": 45 },
+      { "region": "Obliques",   "name": "Russian Twists",  "description": "Seated, twist torso side to side. 20 total.",  "set": 3, "reps": "20",  "rest": 45 },
+      { "region": "Lower abs",  "name": "Leg Raises",      "description": "Lying back. Raise legs under control.",        "set": 3, "reps": "15",  "rest": 45 },
+      { "region": "Obliques",   "name": "Side Plank",      "description": "Hold 30 seconds. Each side.",                  "set": 3, "reps": "30s", "rest": 45 }
+    ],
+    "4": [
+      { "region": "Chest",        "name": "Flat DB Press",     "description": "Flat bench. Elbows at 45°, lower under control.",  "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Upper chest",  "name": "Incline DB Press",  "description": "30–45° incline. Upper chest focus.",               "set": 3, "reps": "12",  "rest": 90 },
+      { "region": "Lower chest",  "name": "Decline DB Press",  "description": "Decline bench. Lower chest.",                      "set": 3, "reps": "10",  "rest": 90 },
+      { "region": "Shoulders",    "name": "DB Shoulder Press", "description": "Press overhead, lock the elbows out.",             "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Side delts",   "name": "Lateral Raises",    "description": "Slight elbow bend, raise to shoulder height.",     "set": 3, "reps": "15",  "rest": 60 },
+      { "region": "Front delts",  "name": "Front Raises",      "description": "Raise straight forward, stop at shoulder height.", "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Triceps",      "name": "Skull Crushers",    "description": "Lying back. Elbows fixed, only forearms move.",    "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Triceps",      "name": "Overhead Triceps",  "description": "DB behind the head, elbows tucked in.",            "set": 3, "reps": "15",  "rest": 60 },
+      { "region": "Triceps",      "name": "Diamond Push-ups",  "description": "Hands in a diamond. Go to failure.",               "set": 3, "reps": "Max", "rest": 60 }
+    ],
+    "5": [
+      { "region": "Back",         "name": "Bent-Over Row",    "description": "Flat back, hips back. Pull toward the belly.", "set": 4, "reps": "10", "rest": 90 },
+      { "region": "Back",         "name": "Single-Arm Row",   "description": "One arm. Squeeze the shoulder blade.",         "set": 3, "reps": "12", "rest": 75 },
+      { "region": "Back + Chest", "name": "DB Pullover",      "description": "Lying back. DB arcs back over the head.",      "set": 3, "reps": "15", "rest": 75 },
+      { "region": "Traps",        "name": "DB Shrugs",        "description": "Just shrug the shoulders, arms relaxed.",      "set": 4, "reps": "15", "rest": 60 },
+      { "region": "Rear delts",   "name": "Rear Delt Flies",  "description": "Bent over, open arms wide. Squeeze.",          "set": 3, "reps": "15", "rest": 60 },
+      { "region": "Biceps",       "name": "Bicep Curls",      "description": "Elbows pinned at the sides.",                  "set": 4, "reps": "12", "rest": 60 },
+      { "region": "Biceps",       "name": "Hammer Curls",     "description": "Neutral grip, like swinging a hammer.",        "set": 3, "reps": "15", "rest": 60 },
+      { "region": "Forearms",     "name": "Wrist Curls",      "description": "Wrist curl. Palms up.",                        "set": 3, "reps": "20", "rest": 45 },
+      { "region": "Forearms",     "name": "Reverse Wrist",    "description": "Reverse wrist curl. Palms down.",              "set": 3, "reps": "20", "rest": 45 }
+    ],
+    "6": [
+      { "region": "Quads",      "name": "Goblet Squats",   "description": "DB at the chest. Heels down, hips back.",      "set": 4, "reps": "12",  "rest": 90 },
+      { "region": "Quads",      "name": "Bulgarian Split", "description": "Rear foot elevated. Single-leg squat.",        "set": 3, "reps": "12",  "rest": 75 },
+      { "region": "Hamstrings", "name": "Romanian DL",     "description": "Push hips back, flat back, soft knees.",       "set": 4, "reps": "10",  "rest": 90 },
+      { "region": "Legs",       "name": "Walking Lunges",  "description": "Lunges forward. Each leg.",                    "set": 3, "reps": "12",  "rest": 75 },
+      { "region": "Legs",       "name": "Step-ups",        "description": "Step up onto a box/chair. Each leg.",          "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Calves",     "name": "Calf Raises",     "description": "Up on the toes, lower under control.",         "set": 4, "reps": "20",  "rest": 45 },
+      { "region": "Abs",        "name": "Plank",           "description": "Hold 60 seconds. Body in a straight line.",    "set": 3, "reps": "60s", "rest": 45 },
+      { "region": "Obliques",   "name": "Russian Twists",  "description": "Seated, twist torso side to side. 20 total.",  "set": 3, "reps": "20",  "rest": 45 },
+      { "region": "Lower abs",  "name": "Leg Raises",      "description": "Lying back. Raise legs under control.",        "set": 3, "reps": "15",  "rest": 45 },
+      { "region": "Obliques",   "name": "Side Plank",      "description": "Hold 30 seconds. Each side.",                  "set": 3, "reps": "30s", "rest": 45 }
+    ],
+    "7": []
+  }
+}

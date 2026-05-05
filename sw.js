@@ -1,7 +1,10 @@
-const CACHE = 'nobro-v2';
+const CACHE = 'nobro-v4';
 const ASSETS = [
   './',
   './index.html',
+  './app.css',
+  './app.js',
+  './default-program.json',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
@@ -43,8 +46,10 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Locale files: network-first so translation tweaks ship without bumping CACHE.
-  if (url.pathname.includes('/locales/') && url.pathname.endsWith('.json')) {
+  // Locale files & default-program.json: network-first so content tweaks ship without bumping CACHE.
+  const isLocale = url.pathname.includes('/locales/') && url.pathname.endsWith('.json');
+  const isDefaultProgram = url.pathname.endsWith('/default-program.json');
+  if (isLocale || isDefaultProgram) {
     e.respondWith(
       fetch(req)
         .then((res) => {

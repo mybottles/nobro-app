@@ -28,7 +28,7 @@
     "progress_done": "SELESAI",
     "rep_set": "{reps} reps × Set {set}/{total}",
     "rep_set_doing": "{reps} reps — Set {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "Untuk yang tidak berpikir. Tanpa keputusan, hanya set.",
     "manifesto_flow": "buka → kerjakan set berikutnya → tutup",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Atur ulang ke bawaan",
     "reset_default_confirm": "Atur ulang program ke bawaan?",
     "import_error": "File program tidak valid.",
-    "no_exercises": "Belum ada gerakan. Tambahkan di bawah."
+    "no_exercises": "Belum ada gerakan. Tambahkan di bawah.",
+    "share": "Bagikan",
+    "share_copied": "Tautan disalin"
   },
   "duration": {
     "h_m": "{h}j {m}m",

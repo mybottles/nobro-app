@@ -28,7 +28,7 @@
     "progress_done": "ГОТОВО",
     "rep_set": "{reps} повторов × Подход {set}/{total}",
     "rep_set_doing": "{reps} повторов — Подход {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "Для тех, кто не думает. Без решений — только подходы.",
     "manifesto_flow": "открыть → сделать следующий подход → закрыть",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Сбросить к стандартной",
     "reset_default_confirm": "Сбросить программу к стандартной?",
     "import_error": "Неверный файл программы.",
-    "no_exercises": "Нет упражнений. Добавьте ниже."
+    "no_exercises": "Нет упражнений. Добавьте ниже.",
+    "share": "Поделиться",
+    "share_copied": "Ссылка скопирована"
   },
   "duration": {
     "h_m": "{h}ч {m}м",

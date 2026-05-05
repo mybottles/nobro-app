@@ -28,7 +28,7 @@
     "progress_done": "完成",
     "rep_set": "{reps} 次 × 第 {set}/{total} 组",
     "rep_set_doing": "{reps} 次 — 第 {set}/{total} 组",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "给不思考的健身者。没有决定，只有组数。",
     "manifesto_flow": "打开 → 做下一组 → 关闭",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "恢复默认",
     "reset_default_confirm": "恢复默认训练计划？",
     "import_error": "训练计划文件无效。",
-    "no_exercises": "没有动作。在下方添加一个。"
+    "no_exercises": "没有动作。在下方添加一个。",
+    "share": "分享",
+    "share_copied": "链接已复制"
   },
   "duration": {
     "h_m": "{h}小时 {m}分",

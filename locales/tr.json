@@ -28,7 +28,7 @@
     "progress_done": "TAMAM",
     "rep_set": "{reps} tekrar × Set {set}/{total}",
     "rep_set_doing": "{reps} tekrar — Set {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "Düşünmeyen lifter için. Karar yok, set var.",
     "manifesto_flow": "aç → sıradaki seti yap → kapat",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Varsayılana dön",
     "reset_default_confirm": "Program varsayılana sıfırlansın mı?",
     "import_error": "Geçersiz program dosyası.",
-    "no_exercises": "Hareket yok. Aşağıdan ekle."
+    "no_exercises": "Hareket yok. Aşağıdan ekle.",
+    "share": "Paylaş",
+    "share_copied": "Bağlantı kopyalandı"
   },
   "duration": {
     "h_m": "{h}s {m}d",

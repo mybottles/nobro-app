@@ -28,7 +28,7 @@
     "progress_done": "HECHO",
     "rep_set": "{reps} reps × Serie {set}/{total}",
     "rep_set_doing": "{reps} reps — Serie {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "Para los que no piensan. Sin decisiones, solo series.",
     "manifesto_flow": "abrir → hacer la siguiente serie → cerrar",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Restablecer",
     "reset_default_confirm": "¿Restablecer el programa por defecto?",
     "import_error": "Archivo de programa inválido.",
-    "no_exercises": "Sin ejercicios. Añade uno abajo."
+    "no_exercises": "Sin ejercicios. Añade uno abajo.",
+    "share": "Compartir",
+    "share_copied": "Enlace copiado"
   },
   "duration": {
     "h_m": "{h}h {m}m",

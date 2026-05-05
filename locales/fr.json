@@ -28,7 +28,7 @@
     "progress_done": "FAIT",
     "rep_set": "{reps} reps × Série {set}/{total}",
     "rep_set_doing": "{reps} reps — Série {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "Pour ceux qui ne pensent pas. Pas de décisions, juste des séries.",
     "manifesto_flow": "ouvrir → faire la série suivante → fermer",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Réinitialiser",
     "reset_default_confirm": "Réinitialiser le programme par défaut ?",
     "import_error": "Fichier de programme invalide.",
-    "no_exercises": "Aucun exercice. Ajoutez-en un ci-dessous."
+    "no_exercises": "Aucun exercice. Ajoutez-en un ci-dessous.",
+    "share": "Partager",
+    "share_copied": "Lien copié"
   },
   "duration": {
     "h_m": "{h}h {m}m",

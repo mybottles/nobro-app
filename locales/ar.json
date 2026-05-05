@@ -28,7 +28,7 @@
     "progress_done": "تم",
     "rep_set": "{reps} تكرار × مجموعة {set}/{total}",
     "rep_set_doing": "{reps} تكرار — مجموعة {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "لمن لا يفكّر. لا قرارات، فقط مجموعات.",
     "manifesto_flow": "افتح ← أنجز المجموعة التالية ← أغلق",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "إعادة إلى الافتراضي",
     "reset_default_confirm": "إعادة البرنامج إلى الافتراضي؟",
     "import_error": "ملف برنامج غير صالح.",
-    "no_exercises": "لا توجد تمارين. أضف واحدًا أدناه."
+    "no_exercises": "لا توجد تمارين. أضف واحدًا أدناه.",
+    "share": "مشاركة",
+    "share_copied": "تم نسخ الرابط"
   },
   "duration": {
     "h_m": "{h}س {m}د",

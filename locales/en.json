@@ -28,7 +28,7 @@
     "progress_done": "DONE",
     "rep_set": "{reps} reps × Set {set}/{total}",
     "rep_set_doing": "{reps} reps — Set {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "For lifters who don't think. No decisions, just sets.",
     "manifesto_flow": "open → do next set → close",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "Reset to default",
     "reset_default_confirm": "Reset program to default?",
     "import_error": "Invalid program file.",
-    "no_exercises": "No exercises. Add one below."
+    "no_exercises": "No exercises. Add one below.",
+    "share": "Share",
+    "share_copied": "Link copied"
   },
   "duration": {
     "h_m": "{h}h {m}m",

@@ -28,7 +28,7 @@
     "progress_done": "हो गया",
     "rep_set": "{reps} reps × सेट {set}/{total}",
     "rep_set_doing": "{reps} reps — सेट {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "बिना सोचे लिफ्ट करने वालों के लिए। फैसले नहीं, बस सेट।",
     "manifesto_flow": "खोलें → अगला सेट करें → बंद करें",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "डिफ़ॉल्ट पर रीसेट",
     "reset_default_confirm": "प्रोग्राम डिफ़ॉल्ट पर रीसेट करें?",
     "import_error": "अमान्य प्रोग्राम फ़ाइल।",
-    "no_exercises": "कोई व्यायाम नहीं। नीचे जोड़ें।"
+    "no_exercises": "कोई व्यायाम नहीं। नीचे जोड़ें।",
+    "share": "शेयर करें",
+    "share_copied": "लिंक कॉपी किया गया"
   },
   "duration": {
     "h_m": "{h}घं {m}मि",

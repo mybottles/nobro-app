@@ -1,24 +1,27 @@
 # nobro.app
 
-A static, installable PWA workout-program tracker. No build step, no framework, no bundler — just `index.html`, a service worker, a manifest, and per-locale JSON files. Open in a browser, get the next set, hit a button, repeat.
+A static, installable PWA workout-program tracker. No build step, no framework, no bundler — just plain HTML, CSS, JS, and JSON files served over HTTP. Open in a browser, get the next set, hit a button, repeat.
 
 Tagline: **no thinking. just lift.**
 
 ## Layout
 
 ```
-index.html          # the entire UI + app logic (single file, vanilla JS)
-manifest.json       # PWA manifest (lang="en")
-sw.js               # service worker (cache name + asset list)
+index.html              # markup shell (head + DOM)
+app.css                 # all styles
+app.js                  # all app logic (vanilla JS, no modules)
+default-program.json    # built-in workout program (English; user-editable content)
+manifest.json           # PWA manifest (lang="en")
+sw.js                   # service worker (cache name + asset list)
 locales/
-  en.json           # canonical / fallback (UI strings only)
-  tr.json           # Turkish UI strings
+  en.json               # canonical / fallback (UI strings only)
+  tr.json               # Turkish UI strings
   ar.json bn.json es.json fr.json hi.json id.json
   pt.json ru.json zh.json
 icon-*.png, icon.svg, apple-touch-icon.png
 ```
 
-There is no package manager, no `node_modules`, no test runner. Serve the directory over HTTP (any static server) and the PWA works.
+There is no package manager, no `node_modules`, no test runner, no bundler. Serve the directory over HTTP (any static server) and the PWA works. `index.html` references `app.css` and `app.js` directly (the `<script>` is `defer`'d).
 
 ## Dev preview
 
@@ -31,16 +34,19 @@ Open `index.html` under that URL to exercise the actual PWA — service worker r
 
 ## How the app is structured
 
-`index.html` contains everything: CSS in `<style>`, the default workout program, the i18n runtime, today's-progress state machine, the modal logic, the program editor, and the service-worker bootstrap.
+- `index.html` — markup only (head, appbar, content area, modals).
+- `app.css` — all styles (single sheet, no preprocessor).
+- `app.js` — all logic: i18n runtime, today's-progress state machine, render loop, modal logic, program editor, service-worker bootstrap.
+- `default-program.json` — the default workout program in import/export format. Lazy-loaded via `fetch()` only when needed (no saved program in `localStorage`, OR user clicks "Reset to default", OR settings opens for the first time without saved data).
 
 State splits into two concerns, each in its own `localStorage` slot:
 
 - **Today's progress** (`idman_state_v1`): which exercise/set you're on, completed sets, start/finish timestamps. Scoped to the calendar day; a new day resets progress.
-- **The program itself** (`nobro_program_v1`): the user's customized workout. Absent until the user edits/imports a program — until then the in-memory `PROGRAM` is a deep clone of `DEFAULT_PROGRAM`.
+- **The program itself** (`nobro_program_v1`): the user's customized workout. Absent until the user edits/imports a program — until then `PROGRAM` is loaded from `default-program.json` on demand.
 
 ## The workout program is the dynamic content
 
-This is the core idea: **the program is content the user owns and edits, not localized UI**. It lives inline in English in `index.html` (`PUSH`, `PULL`, `LEGS_CORE` arrays composed into `DEFAULT_PROGRAM` keyed 1=Mon..7=Sun). Each entry is a flat shape:
+This is the core idea: **the program is content the user owns and edits, not localized UI**. It lives in `default-program.json` (English) in the same import/export format the editor produces. The shape per entry is flat:
 
 ```js
 { region: "Chest", name: "Flat DB Press", description: "...", set: 4, reps: "10", rest: 90 }
@@ -83,18 +89,18 @@ The Settings modal *is* the program editor. Day pills (Mon–Sun) switch which d
 1. **Adding a UI string:** add the key to `locales/en.json` first, then to every other locale. If you skip a locale, the runtime falls back to `en` for that key — acceptable for a temporary gap, not for shipping.
 2. **Adding a new locale:**
    - Drop `locales/{code}.json` matching the shape of `en.json`.
-   - Append the code to `SUPPORTED_LOCALES` in `index.html`.
+   - Append the code to `SUPPORTED_LOCALES` in `app.js`.
    - Bump `CACHE` in `sw.js` so existing installs refetch the locale list.
 
 ## Service worker
 
-Versioned cache name (`nobro-vN`). On `activate`, old caches are deleted. The pre-cache list (`ASSETS`) includes the shell + `locales/en.json`; other locales are cached lazily on first fetch.
+Versioned cache name (`nobro-vN`). On `activate`, old caches are deleted. The pre-cache list (`ASSETS`) includes the shell (`index.html`, `app.css`, `app.js`, `default-program.json`, manifest, icons) + `locales/en.json`; other locales are cached lazily on first fetch.
 
-Locale JSON requests are **network-first** (so translation fixes ship without a cache version bump); everything else is cache-first. If you change non-locale assets and want users to pick them up, bump `CACHE` in `sw.js`.
+**Network-first** for content that ships without a cache bump: locale JSONs and `default-program.json`. Everything else is cache-first. If you change non-network-first assets (HTML/CSS/JS/icons) and want users to pick them up, bump `CACHE` in `sw.js`.
 
 ## Brand & UX rules
 
-- **Brand voice stays English in every locale.** Slogan and manifesto pillars (`"no thinking. just lift."`, `"no noise. no ego. no bullshit."`) are part of the brand, not copy — do not translate them.
+- **Brand voice stays English in every locale.** Slogan and manifesto pillars (`"no thinking. just lift."`, `"no noise. no ego. no nonsense."`) are part of the brand, not copy — do not translate them.
 - **Colors:** `#0a0a0a` bg, `#4ade80` brand green (with green glow on "no" only), `#f59e0b` amber for active set timer. Grays `#d4d4d8 → #b8b8c0 → #a1a1aa` for header hierarchy. Avoid mid-grays in the appbar — sunlight readability matters and the user has flagged this.
 - **Font:** system stack only. No webfonts (bundling fonts violates the minimalism pillar).
 - **Motion:** `scale(0.98)` on press, ~200ms slideUp for sheets. Nothing decorative.
@@ -105,8 +111,8 @@ Locale JSON requests are **network-first** (so translation fixes ship without a 
 GitHub Pages from `main` branch root. **`git push` is the deploy.** Build takes ~30s.
 
 - Repo: https://github.com/mybottles/nobro-app (public)
-- Live: https://mybottles.github.io/nobro-app/
-- Custom domain `nobro.app` planned, not yet configured.
+- Canonical URL: https://nobro.app/ (referenced by `<link rel="canonical">`, `og:url`, `twitter:url`, OG image, and the in-app Share button)
+- GitHub Pages origin: https://mybottles.github.io/nobro-app/
 
 ## Regenerating icons
 
@@ -124,11 +130,11 @@ After updating any cached asset, bump `CACHE` in [sw.js](sw.js) so installed cli
 
 ## Conventions
 
-- Single-file UI: don't introduce a build step or split `index.html` into modules unless there's a real reason. The whole point is "open the file, see the app."
+- No build step: HTML/CSS/JS are loaded directly by the browser. Don't introduce a bundler, framework, or transpilation. If you need to split a file further, do it with another `<script>` or `<link>` — keep it static.
 - Don't put UI strings in JS. Add a key to the locales and use `t()`.
 - Don't add a UI string to only one locale. English first, then propagate.
-- The brand strings ("nobro", "no thinking. just lift.", "no noise. no ego. no bullshit.") are intentionally left in English across all locales — they are part of the brand, not copy.
-- The workout program is content, not UI: keep it inline in English, let the user edit it. Don't translate `region`, `name`, or `description` into the locale files.
+- The brand strings ("nobro", "no thinking. just lift.", "no noise. no ego. no nonsense.") are intentionally left in English across all locales — they are part of the brand, not copy.
+- The workout program is content, not UI: keep `default-program.json` in English. Don't translate `region`, `name`, or `description` into the locale files; let the user edit them in Settings.
 
 ## Keep this file in sync
 
@@ -138,7 +144,7 @@ After updating any cached asset, bump `CACHE` in [sw.js](sw.js) so installed cli
 - Adding/removing a supported locale
 - Changing the locale JSON shape (new top-level section, renamed key family)
 - Changing where state is stored, the storage keys, or the day-reset semantics
-- Changing the program data shape, the import/export format, or `isValidProgramDays`'s contract
+- Changing the program data shape, the import/export format, the location/loader of `default-program.json`, or `isValidProgramDays`'s contract
 - Changing the service-worker caching strategy or cache name scheme
 - Adding a build step, package manager, or framework
 

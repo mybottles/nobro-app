@@ -28,7 +28,7 @@
     "progress_done": "শেষ",
     "rep_set": "{reps} reps × সেট {set}/{total}",
     "rep_set_doing": "{reps} reps — সেট {set}/{total}",
-    "manifesto_pillars": "no noise. no ego. no bullshit.",
+    "manifesto_pillars": "no noise. no ego. no nonsense.",
     "manifesto_intro": "যারা ভাবেন না, তাদের জন্য। সিদ্ধান্ত নয়, শুধু সেট।",
     "manifesto_flow": "খুলুন → পরের সেট করুন → বন্ধ করুন",
     "manifesto_quiet": "no login · no tracking · no server",
@@ -50,7 +50,9 @@
     "reset_default": "ডিফল্টে রিসেট",
     "reset_default_confirm": "প্রোগ্রাম ডিফল্টে রিসেট?",
     "import_error": "অবৈধ প্রোগ্রাম ফাইল।",
-    "no_exercises": "কোনো ব্যায়াম নেই। নিচে যোগ করুন।"
+    "no_exercises": "কোনো ব্যায়াম নেই। নিচে যোগ করুন।",
+    "share": "শেয়ার করুন",
+    "share_copied": "লিংক কপি হয়েছে"
   },
   "duration": {
     "h_m": "{h}ঘ {m}মি",

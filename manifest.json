@@ -1,7 +1,7 @@
 {
   "name": "nobro.app",
   "short_name": "nobro",
-  "description": "Workout program tracker",
+  "description": "A dumbbell program for people who don't want to think. Open, do the next set, close.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
