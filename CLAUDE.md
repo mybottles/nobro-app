@@ -92,6 +92,36 @@ Versioned cache name (`nobro-vN`). On `activate`, old caches are deleted. The pr
 
 Locale JSON requests are **network-first** (so translation fixes ship without a cache version bump); everything else is cache-first. If you change non-locale assets and want users to pick them up, bump `CACHE` in `sw.js`.
 
+## Brand & UX rules
+
+- **Brand voice stays English in every locale.** Slogan and manifesto pillars (`"no thinking. just lift."`, `"no noise. no ego. no bullshit."`) are part of the brand, not copy — do not translate them.
+- **Colors:** `#0a0a0a` bg, `#4ade80` brand green (with green glow on "no" only), `#f59e0b` amber for active set timer. Grays `#d4d4d8 → #b8b8c0 → #a1a1aa` for header hierarchy. Avoid mid-grays in the appbar — sunlight readability matters and the user has flagged this.
+- **Font:** system stack only. No webfonts (bundling fonts violates the minimalism pillar).
+- **Motion:** `scale(0.98)` on press, ~200ms slideUp for sheets. Nothing decorative.
+- **Native PWA feel is a hard requirement.** Don't regress: `safe-area-inset-*`, `viewport-fit=cover`, `touch-action: manipulation`, `user-scalable=no`, wake lock, vibrate + audio beep on rest end, all Apple `apple-mobile-web-app-*` meta tags.
+
+## Hosting
+
+GitHub Pages from `main` branch root. **`git push` is the deploy.** Build takes ~30s.
+
+- Repo: https://github.com/mybottles/nobro-app (public)
+- Live: https://mybottles.github.io/nobro-app/
+- Custom domain `nobro.app` planned, not yet configured.
+
+## Regenerating icons
+
+When `icon.svg` changes, regenerate PNGs (no other tool needed on macOS — `qlmanage` + `sips` ship with the OS):
+
+```bash
+qlmanage -t -s 1024 -o . icon.svg && mv icon.svg.png icon-1024.png
+sips -z 512 512 icon-1024.png --out icon-512.png
+sips -z 192 192 icon-1024.png --out icon-192.png
+sips -z 180 180 icon-1024.png --out apple-touch-icon.png
+rm icon-1024.png
+```
+
+After updating any cached asset, bump `CACHE` in [sw.js](sw.js) so installed clients invalidate the old shell on next launch.
+
 ## Conventions
 
 - Single-file UI: don't introduce a build step or split `index.html` into modules unless there's a real reason. The whole point is "open the file, see the app."
