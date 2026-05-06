@@ -2,6 +2,7 @@
   "name": "nobro.app",
   "short_name": "nobro",
   "description": "A dumbbell program for people who don't want to think. Open, do the next set, close.",
+  "id": "/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -12,6 +13,9 @@
   "lang": "en",
   "dir": "ltr",
   "categories": ["fitness", "health", "lifestyle"],
+  "prefer_related_applications": false,
+  "launch_handler": { "client_mode": "navigate-existing" },
+  "edge_side_panel": { "preferred_width": 400 },
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
