@@ -29,7 +29,7 @@ Bilinçli olarak küçük: ağda toplam ~57 KB. Build adımı yok, framework yok
 - **Wake Lock.** Set sırasında ekran kararmaz.
 - **Günlük sıfırlama.** Bugünün ilerlemesi sadece bugünündür; gece yarısı temiz başlangıç.
 - **11 dil**, tarayıcı diline göre otomatik: English, Türkçe, 中文, हिन्दी, Español, Français, العربية (RTL), বাংলা, Русский, Português, Bahasa Indonesia.
-- **Hep ücretsiz.** [bulutpress](https://bulut.press) sponsorluğunda — premium yok, ek satış yok, "ücretsiz deneme süresi" yok.
+- **Hep ücretsiz.** Premium yok, ek satış yok, "ücretsiz deneme süresi" yok.
 
 ## Kullan
 
@@ -61,6 +61,10 @@ Herhangi bir statik HTTP sunucusu işe yarar. Build edilecek bir şey yok.
 - **Service worker.** Sürümlü cache, shell için cache-first, içerik için (locale'ler + varsayılan program JSON'u) network-first — yani güncellemeler cache bump'sız akıyor.
 
 Tam mimari [CLAUDE.md](CLAUDE.md)'de belgelendi.
+
+## Sözleşme
+
+Bu kısıtlar tesadüf değil — kamuya açık bir taahhüt. nobro'nun her zaman ne olacağı, asla ne olmayacağı ve ileride el değiştirirse yeni sahibinin devraldığı şartların tam listesi için [COVENANT.md](COVENANT.md)'ye bak.
 
 ## Programı özelleştirme
 
@@ -102,11 +106,11 @@ Yeni bir dil eklemek istersen: `en.json`'la aynı şekilde bir JSON dosyası bı
 
 Marka cümleleri — `no thinking. just lift.` ve `no noise. no ego. no nonsense.` — her dilde İngilizce kalıyor. Bunlar marka, çeviri değil.
 
-## Sponsor ve geliştirici
+## Geliştirici
 
-- Sponsor: [bulutpress](https://bulut.press) — Türkiye merkezli hosting / yayıncılık.
-- Geliştirici: [Murat Uysal](https://muratuysal.com).
-- Katkı, çeviri düzeltmesi, hata bildirimi her zaman bekleniyor — issue ya da PR aç.
+[Murat Uysal](https://muratuysal.com) tarafından [bulutpress](https://bulut.press)'te geliştirildi ve sürdürülüyor.
+
+Katkı, çeviri düzeltmesi, hata bildirimi her zaman bekleniyor — issue ya da PR aç.
 
 ## Lisans
 
