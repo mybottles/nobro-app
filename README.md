@@ -29,7 +29,7 @@ It's intentionally tiny: ~57 KB on the wire. No build step, no framework, no `no
 - **Wake Lock.** Screen stays on during a set.
 - **Daily reset.** Today's progress is just for today; midnight gives you a clean start.
 - **11 languages** auto-detected from your browser: English, Türkçe, 中文, हिन्दी, Español, Français, العربية (RTL), বাংলা, Русский, Português, Bahasa Indonesia.
-- **Free forever.** Sponsored by [bulutpress](https://bulut.press) — no premium tier, no upsell, no "free trial."
+- **Free forever.** No premium tier, no upsell, no "free trial."
 
 ## Use it
 
@@ -61,6 +61,10 @@ Any static HTTP server works. There's nothing to build.
 - **Service worker.** Versioned cache, cache-first shell, network-first for content (locales + default program JSON) so updates ship without a cache bump.
 
 The full architecture is documented in [CLAUDE.md](CLAUDE.md).
+
+## The covenant
+
+These constraints aren't accidents — they're a public commitment. See [COVENANT.md](COVENANT.md) for the full list of what nobro will always be, what it will never become, and the terms any future owner inherits.
 
 ## Customizing the program
 
@@ -102,11 +106,11 @@ Want to add a language? Drop a JSON file matching `en.json`, append the code to 
 
 The brand strings — `no thinking. just lift.` and `no noise. no ego. no nonsense.` — stay English in every locale. They're brand, not copy.
 
-## Sponsor & author
+## Author
 
-- Sponsored by [bulutpress](https://bulut.press) — Turkish hosting / publishing.
-- Built by [Murat Uysal](https://muratuysal.com).
-- Contributions, translation fixes, bug reports welcome — open an issue or PR.
+Built and maintained by [Murat Uysal](https://muratuysal.com) at [bulutpress](https://bulut.press).
+
+Contributions, translation fixes, bug reports welcome — open an issue or PR.
 
 ## License
 
