@@ -122,7 +122,7 @@ body {
 }
 .bolge {
   font-size: 14px;
-  color: #888;
+  color: #a1a1aa;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -139,7 +139,7 @@ body {
 .hareket-link::after {
   content: " ↗";
   font-size: 0.4em;
-  color: #666;
+  color: #999;
   vertical-align: super;
   border-bottom: none;
 }
@@ -154,7 +154,7 @@ body {
 }
 .aciklama {
   font-size: 15px;
-  color: #777;
+  color: #a1a1aa;
   max-width: 320px;
   line-height: 1.4;
   margin-top: 4px;
@@ -167,7 +167,7 @@ body {
 }
 .timer-label {
   font-size: 14px;
-  color: #888;
+  color: #a1a1aa;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -194,7 +194,7 @@ body {
 .btn-done { background: #f59e0b; color: #0a0a0a; }
 .btn-skip {
   background: transparent;
-  color: #666;
+  color: #a1a1aa;
   text-transform: none;
   font-weight: 400;
   font-size: 14px;
@@ -203,7 +203,7 @@ body {
   border: none;
   cursor: pointer;
 }
-.btn-skip:active { color: #999; }
+.btn-skip:active { color: #f0f0f0; }
 .summary {
   width: 100%;
   max-width: 400px;
@@ -221,7 +221,7 @@ body {
   font-size: 15px;
 }
 .summary-row .name { color: #ddd; }
-.summary-row .val { color: #888; font-variant-numeric: tabular-nums; }
+.summary-row .val { color: #a1a1aa; font-variant-numeric: tabular-nums; }
 .summary-total {
   margin-top: 16px;
   padding-top: 16px;
@@ -231,7 +231,7 @@ body {
 }
 .empty {
   text-align: center;
-  color: #888;
+  color: #a1a1aa;
   font-size: 18px;
   line-height: 1.6;
 }
@@ -239,7 +239,7 @@ body {
 .footer {
   text-align: center;
   font-size: 11px;
-  color: #444;
+  color: #888;
   margin-top: 16px;
 }
 
@@ -291,7 +291,7 @@ body {
 .modal-close {
   background: none;
   border: none;
-  color: #888;
+  color: #a1a1aa;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -324,7 +324,7 @@ body {
 }
 .manifesto .flow {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  color: #888;
+  color: #a1a1aa;
   font-size: 13px;
   background: #1a1a1a;
   padding: 10px 14px;
@@ -333,7 +333,7 @@ body {
   margin-top: 4px;
 }
 .manifesto .quiet {
-  color: #666;
+  color: #999;
   font-size: 12px;
   margin-top: 18px;
   letter-spacing: 0.2px;
@@ -367,23 +367,23 @@ body {
   border-color: #4ade80;
 }
 .share-btn.is-copied {
-  color: #888;
+  color: #a1a1aa;
   border-color: #2a2a2a;
   background: transparent;
 }
 .credits {
   margin-top: 22px;
   font-size: 11px;
-  color: #555;
+  color: #888;
   letter-spacing: 0.2px;
   line-height: 1.6;
 }
 .credits a, .credits a:visited {
-  color: #888;
+  color: #a1a1aa;
   text-decoration: none;
   border-bottom: 1px dotted #333;
 }
-.credits a:hover { color: #d4d4d8; border-bottom-color: #555; }
+.credits a:hover { color: #d4d4d8; border-bottom-color: #888; }
 .credits .sep { color: #333; margin: 0 4px; }
 
 /* Program editor (Settings) */
@@ -439,7 +439,7 @@ body {
   height: 28px;
   background: transparent;
   border: none;
-  color: #777;
+  color: #a1a1aa;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -461,7 +461,7 @@ body {
   font-size: 14px;
   font-family: inherit;
 }
-.ex-input::placeholder, .ex-textarea::placeholder, .ex-num::placeholder { color: #555; }
+.ex-input::placeholder, .ex-textarea::placeholder, .ex-num::placeholder { color: #888; }
 .ex-input:focus, .ex-textarea:focus, .ex-num:focus {
   outline: none;
   border-color: #4ade80;
@@ -481,7 +481,7 @@ body {
   flex-direction: column;
   gap: 4px;
   font-size: 11px;
-  color: #888;
+  color: #a1a1aa;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -492,14 +492,14 @@ body {
   border: 1px dashed #333;
   border-radius: 10px;
   padding: 12px;
-  color: #888;
+  color: #a1a1aa;
   font-size: 14px;
   cursor: pointer;
 }
 .add-ex-btn:active { background: #161616; color: #ddd; }
 .empty-day {
   text-align: center;
-  color: #555;
+  color: #888;
   padding: 24px 0;
   font-size: 13px;
 }
@@ -551,7 +551,7 @@ body {
 }
 .program-danger .reset-btn {
   background: transparent;
-  color: #6b6b6b;
+  color: #999;
   border: none;
   font-size: 12px;
   padding: 6px 10px;
@@ -568,7 +568,7 @@ body {
 
 /* Programs modal */
 .programs-subtitle {
-  color: #888;
+  color: #a1a1aa;
   font-size: 13px;
   line-height: 1.5;
   margin-bottom: 14px;
@@ -583,7 +583,7 @@ body {
 }
 .program-current-label {
   font-size: 10px;
-  color: #888;
+  color: #a1a1aa;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -601,12 +601,12 @@ body {
   margin-top: 6px;
 }
 .program-current-coach {
-  color: #888;
+  color: #a1a1aa;
   font-size: 12px;
   margin-top: 6px;
 }
 .program-current-stats {
-  color: #666;
+  color: #999;
   font-size: 11px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
@@ -630,12 +630,12 @@ body {
   text-decoration: none;
   border-bottom: 1px dotted #333;
 }
-.program-coach-link:hover { color: #d4d4d8; border-bottom-color: #555; }
+.program-coach-link:hover { color: #d4d4d8; border-bottom-color: #888; }
 .program-coach-name { color: #a1a1aa; }
 
 .programs-list-label {
   font-size: 10px;
-  color: #777;
+  color: #a1a1aa;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 4px 0 10px;
@@ -647,7 +647,7 @@ body {
 }
 .programs-loading, .programs-empty {
   text-align: center;
-  color: #555;
+  color: #888;
   padding: 20px 0;
   font-size: 13px;
 }
@@ -677,7 +677,7 @@ body {
   line-height: 1.5;
 }
 .program-card-coach {
-  color: #888;
+  color: #a1a1aa;
   font-size: 12px;
 }
 .program-card-cta {
@@ -710,7 +710,7 @@ body {
 /* Program card — expand chevron + details */
 .program-card-toggle {
   display: inline-block;
-  color: #666;
+  color: #999;
   font-size: 12px;
   margin-inline-start: 6px;
   transition: transform 0.15s ease;
@@ -764,13 +764,13 @@ body {
 }
 .program-day-count {
   font-size: 10px;
-  color: #666;
+  color: #999;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.4px;
 }
 .program-day-rest-tag {
   font-size: 11px;
-  color: #555;
+  color: #888;
   font-style: italic;
 }
 .program-ex-row {
@@ -788,7 +788,7 @@ body {
   font-size: 10px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  color: #666;
+  color: #999;
 }
 .program-ex-name {
   color: #d4d4d8;
@@ -796,7 +796,7 @@ body {
   overflow-wrap: anywhere;
 }
 .program-ex-spec {
-  color: #888;
+  color: #a1a1aa;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   font-size: 12px;
@@ -806,14 +806,14 @@ body {
   margin-top: 18px;
   text-align: center;
   font-size: 12px;
-  color: #555;
+  color: #888;
 }
 .programs-contribute a, .programs-contribute a:visited {
-  color: #888;
+  color: #a1a1aa;
   text-decoration: none;
   border-bottom: 1px dotted #333;
 }
-.programs-contribute a:hover { color: #d4d4d8; border-bottom-color: #555; }
+.programs-contribute a:hover { color: #d4d4d8; border-bottom-color: #888; }
 
 /* Summary screen — current program line + browse button */
 .summary-program {
@@ -828,7 +828,7 @@ body {
 }
 .summary-program .summary-coach {
   display: block;
-  color: #888;
+  color: #a1a1aa;
   font-size: 12px;
   margin-top: 4px;
 }

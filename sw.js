@@ -1,4 +1,4 @@
-const CACHE = 'nobro-v12';
+const CACHE = 'nobro-v13';
 const ASSETS = [
   './',
   './index.html',
