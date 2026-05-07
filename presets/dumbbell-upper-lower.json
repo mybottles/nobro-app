@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "id": "dumbbell-upper-lower",
+  "name": "Dumbbell Upper / Lower 4-Day",
+  "description": "Four days a week: two upper-body sessions, two lower-body. Heavier compound lifts, fewer accessories. Good middle ground between the 3-day full-body and the 6-day split.",
+  "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" },
+  "days": {
+    "1": [
+      { "region": "Chest",      "name": "Flat DB Press",      "description": "Heavy. Lower under control, drive up.",         "set": 4, "reps": "8",   "rest": 120 },
+      { "region": "Back",       "name": "Bent-Over Row",      "description": "Flat back. Pull to the belly button.",          "set": 4, "reps": "8",   "rest": 120 },
+      { "region": "Shoulders",  "name": "DB Shoulder Press",  "description": "Lock the elbows out at the top.",               "set": 3, "reps": "10",  "rest": 90  },
+      { "region": "Back",       "name": "Single-Arm Row",     "description": "One arm. Squeeze the shoulder blade.",          "set": 3, "reps": "10",  "rest": 75  },
+      { "region": "Biceps",     "name": "Bicep Curls",        "description": "Elbows pinned at the sides.",                   "set": 3, "reps": "12",  "rest": 60  },
+      { "region": "Triceps",    "name": "Skull Crushers",     "description": "Lying back. Only forearms move.",               "set": 3, "reps": "12",  "rest": 60  }
+    ],
+    "2": [
+      { "region": "Quads",      "name": "Goblet Squats",      "description": "DB at the chest. Heels down, hips back.",       "set": 4, "reps": "10",  "rest": 120 },
+      { "region": "Hamstrings", "name": "Romanian DL",        "description": "Push hips back, soft knees, flat back.",        "set": 4, "reps": "10",  "rest": 120 },
+      { "region": "Quads",      "name": "Bulgarian Split",    "description": "Rear foot elevated. Each leg.",                 "set": 3, "reps": "10",  "rest": 90  },
+      { "region": "Glutes",     "name": "Hip Thrusts",        "description": "Shoulders on a bench, DB on the hips.",         "set": 3, "reps": "12",  "rest": 75  },
+      { "region": "Calves",     "name": "Calf Raises",        "description": "DB in hand. Up on the toes.",                   "set": 4, "reps": "20",  "rest": 45  },
+      { "region": "Abs",        "name": "Plank",              "description": "60 seconds. Body in a straight line.",          "set": 3, "reps": "60s", "rest": 45  }
+    ],
+    "3": [],
+    "4": [
+      { "region": "Upper chest", "name": "Incline DB Press",  "description": "30–45° incline. Upper chest focus.",            "set": 4, "reps": "8",   "rest": 120 },
+      { "region": "Back",        "name": "DB Pullover",       "description": "Lying back. DB arcs back over the head.",       "set": 4, "reps": "10",  "rest": 90  },
+      { "region": "Side delts",  "name": "Lateral Raises",    "description": "Slight elbow bend. Raise to shoulder height.",  "set": 4, "reps": "12",  "rest": 60  },
+      { "region": "Rear delts",  "name": "Rear Delt Flies",   "description": "Bent over, open arms wide. Squeeze.",           "set": 3, "reps": "15",  "rest": 60  },
+      { "region": "Biceps",      "name": "Hammer Curls",      "description": "Neutral grip, like swinging a hammer.",         "set": 3, "reps": "12",  "rest": 60  },
+      { "region": "Triceps",     "name": "Overhead Triceps",  "description": "DB behind the head, elbows tucked in.",         "set": 3, "reps": "12",  "rest": 60  }
+    ],
+    "5": [
+      { "region": "Hamstrings", "name": "Romanian DL",        "description": "Volume day. Lighter, slower lower.",            "set": 4, "reps": "12",  "rest": 90  },
+      { "region": "Quads",      "name": "Walking Lunges",     "description": "Long stride. Each leg counts.",                 "set": 3, "reps": "12",  "rest": 75  },
+      { "region": "Glutes",     "name": "Single-Leg Bridge",  "description": "One leg lifted. Drive the planted heel.",       "set": 3, "reps": "12",  "rest": 60  },
+      { "region": "Quads",      "name": "Step-ups",           "description": "Step up onto a box/chair. Each leg.",           "set": 3, "reps": "12",  "rest": 60  },
+      { "region": "Obliques",   "name": "Russian Twists",     "description": "Seated, twist side to side. 20 total.",         "set": 3, "reps": "20",  "rest": 45  },
+      { "region": "Lower abs",  "name": "Leg Raises",         "description": "Lying back. Raise legs under control.",         "set": 3, "reps": "15",  "rest": 45  }
+    ],
+    "6": [],
+    "7": []
+  }
+}

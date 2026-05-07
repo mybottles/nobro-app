@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "id": "bodyweight-3day",
+  "name": "Bodyweight 3-Day Full-Body",
+  "description": "No equipment, three full-body sessions per week. Push, pull (using a sturdy bar or door frame), legs, core. Built for travel and tight spaces.",
+  "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" },
+  "days": {
+    "1": [
+      { "region": "Chest",      "name": "Push-ups",          "description": "Hands shoulder-width. Lower until chest grazes the floor.", "set": 4, "reps": "12",  "rest": 60 },
+      { "region": "Upper back", "name": "Pull-ups",          "description": "Bar or door frame. Pull chin over the bar. Slow lower.",    "set": 4, "reps": "Max", "rest": 90 },
+      { "region": "Quads",      "name": "Bodyweight Squats", "description": "Heels down, hips back, knees track the toes.",             "set": 4, "reps": "20",  "rest": 60 },
+      { "region": "Shoulders",  "name": "Pike Push-ups",     "description": "Hips up, head between hands. Press the floor away.",       "set": 3, "reps": "10",  "rest": 60 },
+      { "region": "Hamstrings", "name": "Glute Bridges",     "description": "Lying back. Drive heels, squeeze the glutes at the top.",  "set": 3, "reps": "15",  "rest": 45 },
+      { "region": "Abs",        "name": "Plank",             "description": "Body in a straight line. Glutes and core tight.",          "set": 3, "reps": "45s", "rest": 45 }
+    ],
+    "2": [],
+    "3": [
+      { "region": "Chest",      "name": "Diamond Push-ups",   "description": "Hands form a diamond. Triceps and inner chest.",           "set": 3, "reps": "Max", "rest": 60 },
+      { "region": "Back",       "name": "Inverted Rows",      "description": "Under a sturdy table or low bar. Pull the chest up.",      "set": 4, "reps": "12",  "rest": 75 },
+      { "region": "Legs",       "name": "Reverse Lunges",     "description": "Step back, drop the back knee. Each leg.",                 "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Calves",     "name": "Calf Raises",        "description": "Up on the toes, lower under control. Add a step if you can.", "set": 3, "reps": "25",  "rest": 30 },
+      { "region": "Obliques",   "name": "Side Plank",         "description": "Hold each side. Hips up, body straight.",                  "set": 3, "reps": "30s", "rest": 45 },
+      { "region": "Lower abs",  "name": "Leg Raises",         "description": "Lying back. Raise legs slowly, no momentum.",              "set": 3, "reps": "15",  "rest": 45 }
+    ],
+    "4": [],
+    "5": [
+      { "region": "Chest",      "name": "Wide Push-ups",     "description": "Hands wider than shoulders. Outer chest focus.",            "set": 4, "reps": "12",  "rest": 60 },
+      { "region": "Back",       "name": "Pull-ups",          "description": "Wide grip. Pull chin over the bar.",                        "set": 4, "reps": "Max", "rest": 90 },
+      { "region": "Glutes",     "name": "Single-Leg Bridge", "description": "One leg lifted. Drive through the planted heel.",           "set": 3, "reps": "12",  "rest": 60 },
+      { "region": "Quads",      "name": "Bulgarian Split",   "description": "Rear foot on a chair. Single-leg squat.",                   "set": 3, "reps": "10",  "rest": 75 },
+      { "region": "Shoulders",  "name": "Hand-Release P-up", "description": "At the bottom, hands off the floor for a full second.",    "set": 3, "reps": "10",  "rest": 60 },
+      { "region": "Abs",        "name": "Hollow Hold",       "description": "Lying back. Lower back pressed into the floor.",            "set": 3, "reps": "30s", "rest": 45 }
+    ],
+    "6": [],
+    "7": []
+  }
+}

@@ -1,15 +1,16 @@
-const CACHE = 'nobro-v7';
+const CACHE = 'nobro-v11';
 const ASSETS = [
   './',
   './index.html',
   './app.css',
   './app.js',
-  './default-program.json',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
-  './locales/en.json'
+  './locales/en.json',
+  './presets/index.json',
+  './presets/default.json'
 ];
 
 self.addEventListener('install', (e) => {
@@ -46,10 +47,10 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Locale files & default-program.json: network-first so content tweaks ship without bumping CACHE.
+  // Locale files & preset JSONs: network-first so content tweaks ship without bumping CACHE.
   const isLocale = url.pathname.includes('/locales/') && url.pathname.endsWith('.json');
-  const isDefaultProgram = url.pathname.endsWith('/default-program.json');
-  if (isLocale || isDefaultProgram) {
+  const isPreset = url.pathname.includes('/presets/') && url.pathname.endsWith('.json');
+  if (isLocale || isPreset) {
     e.respondWith(
       fetch(req)
         .then((res) => {

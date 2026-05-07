@@ -23,6 +23,7 @@ It's intentionally tiny: ~57 KB on the wire. No build step, no framework, no `no
 - **No installation.** It's a PWA — on iPhone: Share → Add to Home Screen; on Android: menu → Install. After that it behaves like a native app: own icon, full-screen, no browser chrome.
 - **Works offline.** Service worker caches the shell on first load. Your gym's WiFi can die, the app won't.
 - **Customizable program.** The default 6-day dumbbell split is a starting point — Settings lets you add, remove, reorder exercises, change sets/reps/rest seconds for any day.
+- **Program library.** A growing catalog of community-contributed programs (Dumbbell 6-day, Bodyweight 3-day, Upper/Lower 4-day, …). Tap the menu icon, pick one, lift. Coaches who contribute get a credit + nofollow link.
 - **Export / import.** Back up your program as JSON or move it to another device.
 - **Rest timer.** Vibrates and beeps the moment your rest is up.
 - **Wake Lock.** Screen stays on during a set.
@@ -63,11 +64,14 @@ The full architecture is documented in [CLAUDE.md](CLAUDE.md).
 
 ## Customizing the program
 
-The default workout program is just a JSON file you can fully edit in the app's Settings sheet — or by importing your own JSON. Format:
+The workout program is just a JSON file you can fully edit in the app's Settings sheet — or by importing your own JSON. Format:
 
 ```json
 {
   "version": 1,
+  "name": "My Program",
+  "description": "Optional one-line pitch.",
+  "coach": { "name": "Optional", "url": "https://optional" },
   "days": {
     "1": [
       { "region": "Chest", "name": "Flat DB Press", "description": "...", "set": 4, "reps": "10", "rest": 90 }
@@ -77,7 +81,18 @@ The default workout program is just a JSON file you can fully edit in the app's 
 }
 ```
 
-`reps` is a string so it can hold `"Max"`, `"60s"`, or a numeric count.
+`reps` is a string so it can hold `"Max"`, `"60s"`, or a numeric count. The top-level metadata (`name`, `description`, `coach`) is optional everywhere — the app reads it if present, ignores it if not.
+
+## Contributing a program
+
+The Programs modal is community-curated. To add yours, fork the repo and open a PR with:
+
+1. **`presets/<your-id>.json`** — your full program, with metadata (`name`, `description`, `coach: { name, url }`) and `days`. The bundled presets in [presets/](presets/) are working examples.
+2. **An entry in [`presets/index.json`](presets/index.json)** — the same `id`, the file path, and the same name/description/coach (the index is the lightweight list the modal renders without fetching every preset).
+
+Coach links use `rel="nofollow noopener"` automatically — they're contributor self-promotion, so they don't pass SEO weight, but anyone using your program will see your name and click through to your site. See [`presets/README.md`](presets/README.md) for the contributor checklist.
+
+The bar is low: write a program you'd actually run yourself, fill in honest metadata, open a PR.
 
 ## Translating
 

@@ -1,5 +1,9 @@
 {
   "version": 1,
+  "id": "default",
+  "name": "Default Dumbbell 6-Day",
+  "description": "A 6-day push / pull / legs split using only dumbbells. The starter program nobro ships with.",
+  "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" },
   "days": {
     "1": [
       { "region": "Chest",        "name": "Flat DB Press",     "description": "Flat bench. Elbows at 45°, lower under control.",  "set": 4, "reps": "10",  "rest": 90 },

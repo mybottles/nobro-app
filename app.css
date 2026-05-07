@@ -566,6 +566,288 @@ body {
   background: rgba(248, 113, 113, 0.06);
 }
 
+/* Programs modal */
+.programs-subtitle {
+  color: #888;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.program-current {
+  background: #161616;
+  border: 1px solid #232323;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  cursor: pointer;
+}
+.program-current-label {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.program-current-name {
+  color: #f0f0f0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.3;
+}
+.program-current-desc {
+  color: #999;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+.program-current-coach {
+  color: #888;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.program-current-stats {
+  color: #666;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.program-custom-tag {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-inline-start: 6px;
+  vertical-align: middle;
+}
+.program-coach-link, .program-coach-link:visited {
+  color: #a1a1aa;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+}
+.program-coach-link:hover { color: #d4d4d8; border-bottom-color: #555; }
+.program-coach-name { color: #a1a1aa; }
+
+.programs-list-label {
+  font-size: 10px;
+  color: #777;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 4px 0 10px;
+}
+.programs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.programs-loading, .programs-empty {
+  text-align: center;
+  color: #555;
+  padding: 20px 0;
+  font-size: 13px;
+}
+.program-card {
+  background: #1a1a1a;
+  border: 1px solid #232323;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+.program-card.is-active {
+  border-color: rgba(74, 222, 128, 0.45);
+  background: rgba(74, 222, 128, 0.04);
+}
+.program-card-name {
+  color: #f0f0f0;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.program-card-desc {
+  color: #999;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.program-card-coach {
+  color: #888;
+  font-size: 12px;
+}
+.program-card-cta {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.program-apply-btn {
+  background: #4ade80;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.05s, background 0.15s;
+}
+.program-apply-btn:active { transform: scale(0.97); }
+.program-card-active {
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+/* Program card — expand chevron + details */
+.program-card-toggle {
+  display: inline-block;
+  color: #666;
+  font-size: 12px;
+  margin-inline-start: 6px;
+  transition: transform 0.15s ease;
+  vertical-align: middle;
+}
+.program-card.is-expanded .program-card-toggle,
+.program-current.is-expanded .program-card-toggle {
+  transform: rotate(180deg);
+  color: #4ade80;
+}
+.program-card-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #232323;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: default;
+}
+.program-card-details[hidden] { display: none; }
+.program-day-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+.program-day-block + .program-day-block {
+  border-top: 1px solid #1f1f1f;
+  padding-top: 10px;
+}
+.program-day-rest {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+}
+.program-day-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.program-day-name {
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #4ade80;
+  font-weight: 800;
+}
+.program-day-rest .program-day-name {
+  color: #4a6650;
+}
+.program-day-count {
+  font-size: 10px;
+  color: #666;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.4px;
+}
+.program-day-rest-tag {
+  font-size: 11px;
+  color: #555;
+  font-style: italic;
+}
+.program-ex-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 4px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.program-ex-row:last-child { border-bottom: none; }
+.program-ex-region {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #666;
+}
+.program-ex-name {
+  color: #d4d4d8;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.program-ex-spec {
+  color: #888;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.programs-contribute {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+}
+.programs-contribute a, .programs-contribute a:visited {
+  color: #888;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+}
+.programs-contribute a:hover { color: #d4d4d8; border-bottom-color: #555; }
+
+/* Summary screen — current program line + browse button */
+.summary-program {
+  background: #141414;
+  border: 1px solid #232323;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #d4d4d8;
+  line-height: 1.5;
+}
+.summary-program .summary-coach {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.summary-browse-btn {
+  margin-top: 18px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #d4d4d8;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.summary-browse-btn:active { background: #1a1a1a; }
+
 @keyframes slideUp {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }

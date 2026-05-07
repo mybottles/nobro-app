@@ -1,8 +1,12 @@
 // ============================================
-// Program storage (localStorage if user customized; otherwise default-program.json)
+// Program storage (localStorage if user customized; otherwise presets/default.json)
 // ============================================
 const PROGRAM_KEY = 'nobro_program_v1';
+const PROGRAM_META_KEY = 'nobro_program_meta_v1';
+const PROGRAM_CUSTOMIZED_KEY = 'nobro_program_customized_v1';
 const PROGRAM_VERSION = 1;
+const PRESETS_DIR = './presets/';
+const DEFAULT_PRESET_ID = 'default';
 const EMPTY_PROGRAM = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [] };
 
 function deepClone(x) { return JSON.parse(JSON.stringify(x)); }
@@ -25,18 +29,95 @@ function isValidProgramDays(days) {
   return true;
 }
 
+function pickPresetMeta(o) {
+  if (!o || typeof o !== 'object') return null;
+  const meta = {};
+  if (typeof o.id === 'string') meta.id = o.id;
+  if (typeof o.name === 'string') meta.name = o.name;
+  if (typeof o.description === 'string') meta.description = o.description;
+  if (o.coach && typeof o.coach === 'object'
+      && typeof o.coach.name === 'string') {
+    meta.coach = { name: o.coach.name };
+    if (typeof o.coach.url === 'string') meta.coach.url = o.coach.url;
+  }
+  return Object.keys(meta).length ? meta : null;
+}
+
+let _presetIndexCache = null;
+async function loadPresetIndex() {
+  if (_presetIndexCache) return _presetIndexCache;
+  try {
+    const res = await fetch(`${PRESETS_DIR}index.json`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('preset index fetch failed');
+    const json = await res.json();
+    if (json && Array.isArray(json.presets)) {
+      _presetIndexCache = json.presets.filter(p => p && typeof p.id === 'string' && typeof p.file === 'string');
+      return _presetIndexCache;
+    }
+  } catch (e) {}
+  return [];
+}
+
+async function loadPresetById(id) {
+  const idx = await loadPresetIndex();
+  const entry = idx.find(p => p.id === id);
+  if (!entry) return null;
+  try {
+    const res = await fetch(`${PRESETS_DIR}${entry.file}`, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('preset fetch failed');
+    const json = await res.json();
+    if (json && isValidProgramDays(json.days)) {
+      return { meta: pickPresetMeta(json) || pickPresetMeta(entry), days: json.days };
+    }
+  } catch (e) {}
+  return null;
+}
+
+const _presetDaysCache = new Map();
+async function getPresetDays(id) {
+  if (_presetDaysCache.has(id)) return _presetDaysCache.get(id);
+  const preset = await loadPresetById(id);
+  const days = preset && preset.days ? preset.days : null;
+  if (days) _presetDaysCache.set(id, days);
+  return days;
+}
+
 let _defaultProgramCache = null;
 async function loadDefaultProgram() {
   if (_defaultProgramCache) return _defaultProgramCache;
+  const preset = await loadPresetById(DEFAULT_PRESET_ID);
+  if (preset && preset.days) {
+    _defaultProgramCache = preset.days;
+    return preset.days;
+  }
+  return EMPTY_PROGRAM;
+}
+
+function loadProgramMeta() {
   try {
-    const res = await fetch('./default-program.json', { cache: 'no-cache' });
-    const json = await res.json();
-    if (json && json.days && isValidProgramDays(json.days)) {
-      _defaultProgramCache = json.days;
-      return json.days;
+    const raw = localStorage.getItem(PROGRAM_META_KEY);
+    if (raw) {
+      const m = JSON.parse(raw);
+      if (m && typeof m === 'object') return m;
     }
   } catch (e) {}
-  return EMPTY_PROGRAM;
+  return null;
+}
+
+function saveProgramMeta(meta) {
+  if (meta) localStorage.setItem(PROGRAM_META_KEY, JSON.stringify(meta));
+  else localStorage.removeItem(PROGRAM_META_KEY);
+}
+
+function isProgramCustomized() {
+  try { return localStorage.getItem(PROGRAM_CUSTOMIZED_KEY) === '1'; } catch (e) { return false; }
+}
+
+function setProgramCustomized(flag) {
+  try {
+    if (flag) localStorage.setItem(PROGRAM_CUSTOMIZED_KEY, '1');
+    else localStorage.removeItem(PROGRAM_CUSTOMIZED_KEY);
+  } catch (e) {}
 }
 
 async function loadProgram() {
@@ -440,12 +521,24 @@ function renderOzet(program) {
     rows += `<div class="summary-row"><span class="name"><a href="${ytUrl(h.name)}" target="_blank" rel="noopener">${escapeHtml(h.name)}</a></span><span class="val">${yapilan}/${h.set}</span></div>`;
   });
 
+  const meta = currentMeta;
+  const customized = isProgramCustomized();
+  let programLine = '';
+  if (meta || customized) {
+    const name = meta ? escapeHtml(meta.name || t('ui.programs_unnamed')) : escapeHtml(t('ui.programs_unnamed'));
+    const tag = customized ? ` <span class="program-custom-tag">${escapeHtml(t('ui.programs_customized'))}</span>` : '';
+    const coach = (meta && meta.coach) ? ` <span class="summary-coach">${escapeHtml(t('ui.programs_coach_by'))} ${renderCoachLine(meta.coach)}</span>` : '';
+    programLine = `<div class="summary-program">${name}${tag}${coach}</div>`;
+  }
+
   document.getElementById('main').innerHTML = `
     <div class="summary">
       <h2>${escapeHtml(t('ui.today_done'))}</h2>
+      ${programLine}
       ${rows}
       <div class="summary-row summary-total"><span class="name">${escapeHtml(t('ui.total_sets'))}</span><span class="val">${toplamSet}</span></div>
       <div class="summary-row"><span class="name">${escapeHtml(t('ui.duration'))}</span><span class="val">${escapeHtml(fmtSure(sure))}</span></div>
+      <button class="summary-browse-btn" id="summaryBrowseBtn" type="button">${escapeHtml(t('ui.programs_browse'))}</button>
     </div>
   `;
   document.getElementById('bottom').innerHTML = '';
@@ -458,6 +551,8 @@ function renderOzet(program) {
       render();
     }
   });
+  const browseBtn = document.getElementById('summaryBrowseBtn');
+  if (browseBtn) browseBtn.addEventListener('click', () => openPrograms());
 }
 
 window.addEventListener('beforeunload', () => {
@@ -475,6 +570,7 @@ function openModal(id) {
 function closeModal(m) { m.hidden = true; }
 
 document.getElementById('aboutBtn').addEventListener('click', () => openModal('aboutModal'));
+document.getElementById('programsBtn').addEventListener('click', () => openPrograms());
 document.getElementById('settingsBtn').addEventListener('click', () => openSettings());
 
 document.getElementById('shareBtn').addEventListener('click', async () => {
@@ -624,7 +720,9 @@ document.getElementById('saveProgramBtn').addEventListener('click', async () => 
     });
   }
   saveCustomProgram(programDraft);
+  setProgramCustomized(true);
   PROGRAM = await loadProgram();
+  await syncCurrentMeta();
   programDraft = null;
   closeModal(document.getElementById('settingsModal'));
   render();
@@ -669,7 +767,11 @@ document.getElementById('importFile').addEventListener('change', async (e) => {
     }
     if (!isValidProgramDays(days)) throw new Error('invalid');
     saveCustomProgram(days);
+    const importedMeta = pickPresetMeta(parsed);
+    saveProgramMeta(importedMeta);
+    setProgramCustomized(!importedMeta);
     PROGRAM = await loadProgram();
+    await syncCurrentMeta();
     programDraft = deepClone(PROGRAM);
     renderDayEditor();
   } catch (err) {
@@ -680,9 +782,239 @@ document.getElementById('importFile').addEventListener('change', async (e) => {
 document.getElementById('resetProgramBtn').addEventListener('click', async () => {
   if (!confirm(t('ui.reset_default_confirm'))) return;
   localStorage.removeItem(PROGRAM_KEY);
+  saveProgramMeta(null);
+  setProgramCustomized(false);
   PROGRAM = await loadProgram();
+  await syncCurrentMeta();
   programDraft = deepClone(PROGRAM);
   renderDayEditor();
+});
+
+// ============================================
+// Programs modal — preset library (lazy-loaded)
+// ============================================
+const PROGRAMS_REPO_URL = 'https://github.com/mybottles/nobro-app/tree/main/presets';
+let currentMeta = null;
+
+async function syncCurrentMeta() {
+  let meta = loadProgramMeta();
+  if (!meta) {
+    let hasSavedProgram = false;
+    try { hasSavedProgram = !!localStorage.getItem(PROGRAM_KEY); } catch (e) {}
+    if (!hasSavedProgram) {
+      const idx = await loadPresetIndex();
+      const def = idx.find(p => p.id === DEFAULT_PRESET_ID);
+      if (def) meta = pickPresetMeta(def);
+    }
+  }
+  currentMeta = meta;
+  return currentMeta;
+}
+
+function programSummaryCounts(days) {
+  let exercises = 0, sets = 0, activeDays = 0;
+  for (const k of ['1','2','3','4','5','6','7']) {
+    const arr = days[k] || [];
+    if (arr.length) activeDays++;
+    arr.forEach(e => {
+      exercises++;
+      sets += (parseInt(e.set, 10) || 0);
+    });
+  }
+  return { exercises, sets, activeDays };
+}
+
+function renderCoachLine(coach) {
+  if (!coach || !coach.name) return '';
+  const name = escapeHtml(coach.name);
+  if (coach.url) {
+    return `<a class="program-coach-link" href="${escapeHtml(coach.url)}" target="_blank" rel="nofollow noopener">${name}</a>`;
+  }
+  return `<span class="program-coach-name">${name}</span>`;
+}
+
+function renderProgramDetails(days) {
+  if (!days) return '';
+  let html = '';
+  for (let d = 1; d <= 7; d++) {
+    const arr = (days[String(d)] || []).slice();
+    const dayName = escapeHtml(dayShort(d));
+    if (arr.length === 0) {
+      html += `<div class="program-day-block program-day-rest">
+        <span class="program-day-name">${dayName}</span>
+        <span class="program-day-rest-tag">${escapeHtml(t('ui.programs_rest_day'))}</span>
+      </div>`;
+      continue;
+    }
+    let rows = '';
+    arr.forEach(ex => {
+      const reps = escapeHtml(String(ex.reps));
+      const set = parseInt(ex.set, 10) || 0;
+      const rest = parseInt(ex.rest, 10) || 0;
+      rows += `<div class="program-ex-row">
+        <span class="program-ex-region">${escapeHtml(ex.region || '')}</span>
+        <span class="program-ex-name">${escapeHtml(ex.name || '')}</span>
+        <span class="program-ex-spec">${set}×${reps} · ${rest}s</span>
+      </div>`;
+    });
+    html += `<div class="program-day-block">
+      <div class="program-day-header"><span class="program-day-name">${dayName}</span> <span class="program-day-count">${arr.length}</span></div>
+      ${rows}
+    </div>`;
+  }
+  return html;
+}
+
+function renderCurrentProgramCard() {
+  const wrap = document.getElementById('currentProgramCard');
+  if (!wrap) return;
+  const meta = currentMeta;
+  const counts = programSummaryCounts(PROGRAM || {});
+  const customized = isProgramCustomized();
+
+  let nameLine, descLine, coachLine;
+  if (meta) {
+    const customSuffix = customized ? ` <span class="program-custom-tag">${escapeHtml(t('ui.programs_customized'))}</span>` : '';
+    nameLine = `${escapeHtml(meta.name || t('ui.programs_unnamed'))}${customSuffix}`;
+    descLine = meta.description ? escapeHtml(meta.description) : '';
+    coachLine = meta.coach ? `${escapeHtml(t('ui.programs_coach_by'))} ${renderCoachLine(meta.coach)}` : '';
+  } else {
+    nameLine = `${escapeHtml(t('ui.programs_unnamed'))} <span class="program-custom-tag">${escapeHtml(t('ui.programs_customized'))}</span>`;
+    descLine = '';
+    coachLine = '';
+  }
+
+  const stats = `${counts.exercises} ${escapeHtml(t('ui.programs_exercises'))} · ${counts.sets} ${escapeHtml(t('ui.programs_sets'))} · ${counts.activeDays}/7 ${escapeHtml(t('ui.programs_days'))}`;
+
+  wrap.innerHTML = `
+    <div class="program-current-label">${escapeHtml(t('ui.programs_current'))}</div>
+    <div class="program-current-name">${nameLine} <span class="program-card-toggle" aria-hidden="true">▾</span></div>
+    ${descLine ? `<div class="program-current-desc">${descLine}</div>` : ''}
+    ${coachLine ? `<div class="program-current-coach">${coachLine}</div>` : ''}
+    <div class="program-current-stats">${stats}</div>
+    <div class="program-card-details" id="currentProgramDetails" hidden></div>
+  `;
+}
+
+function renderProgramsList(presets) {
+  const wrap = document.getElementById('programsList');
+  if (!wrap) return;
+  if (!presets || !presets.length) {
+    wrap.innerHTML = `<div class="programs-empty">${escapeHtml(t('ui.programs_load_error'))}</div>`;
+    return;
+  }
+  const activeId = currentMeta && currentMeta.id;
+  const customized = isProgramCustomized();
+  let html = '';
+  for (const p of presets) {
+    const isActive = activeId === p.id && !customized;
+    const coach = p.coach
+      ? `<div class="program-card-coach">${escapeHtml(t('ui.programs_coach_by'))} ${renderCoachLine(p.coach)}</div>`
+      : '';
+    const desc = p.description ? `<div class="program-card-desc">${escapeHtml(p.description)}</div>` : '';
+    const cta = isActive
+      ? `<span class="program-card-active">${escapeHtml(t('ui.programs_active'))}</span>`
+      : `<button class="program-apply-btn" type="button" data-apply="${escapeHtml(p.id)}">${escapeHtml(t('ui.programs_apply'))}</button>`;
+    html += `
+      <div class="program-card${isActive ? ' is-active' : ''}" data-card-id="${escapeHtml(p.id)}">
+        <div class="program-card-name">${escapeHtml(p.name || p.id)} <span class="program-card-toggle" aria-hidden="true">▾</span></div>
+        ${desc}
+        ${coach}
+        <div class="program-card-details" hidden></div>
+        <div class="program-card-cta">${cta}</div>
+      </div>
+    `;
+  }
+  wrap.innerHTML = html;
+}
+
+async function openPrograms() {
+  await syncCurrentMeta();
+  renderCurrentProgramCard();
+  const wrap = document.getElementById('programsList');
+  if (wrap) wrap.innerHTML = `<div class="programs-loading">…</div>`;
+  openModal('programsModal');
+  const presets = await loadPresetIndex();
+  renderProgramsList(presets);
+}
+
+async function applyPreset(id) {
+  const idx = await loadPresetIndex();
+  const entry = idx.find(p => p.id === id);
+  if (!entry) { alert(t('ui.programs_load_error')); return; }
+  if (!confirm(t('ui.programs_apply_confirm', { name: entry.name || id }))) return;
+
+  const preset = await loadPresetById(id);
+  if (!preset) { alert(t('ui.programs_load_error')); return; }
+
+  saveCustomProgram(preset.days);
+  saveProgramMeta(preset.meta || pickPresetMeta(entry));
+  setProgramCustomized(false);
+
+  // Reset today's progress so the summary stays consistent with the new program.
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  state = loadState();
+
+  PROGRAM = await loadProgram();
+  await syncCurrentMeta();
+  closeModal(document.getElementById('programsModal'));
+  render();
+}
+
+async function togglePresetCardExpand(card) {
+  const id = card.dataset.cardId;
+  const details = card.querySelector('.program-card-details');
+  if (!details || !id) return;
+  if (!details.hidden) {
+    details.hidden = true;
+    card.classList.remove('is-expanded');
+    return;
+  }
+  if (!details.dataset.loaded) {
+    details.innerHTML = `<div class="programs-loading">…</div>`;
+    details.hidden = false;
+    card.classList.add('is-expanded');
+    const days = await getPresetDays(id);
+    if (days) {
+      details.innerHTML = renderProgramDetails(days);
+      details.dataset.loaded = '1';
+    } else {
+      details.innerHTML = `<div class="programs-empty">${escapeHtml(t('ui.programs_load_error'))}</div>`;
+    }
+  } else {
+    details.hidden = false;
+    card.classList.add('is-expanded');
+  }
+}
+
+function toggleCurrentCardExpand() {
+  const card = document.getElementById('currentProgramCard');
+  const details = document.getElementById('currentProgramDetails');
+  if (!card || !details) return;
+  if (!details.hidden) {
+    details.hidden = true;
+    card.classList.remove('is-expanded');
+    return;
+  }
+  details.innerHTML = renderProgramDetails(PROGRAM);
+  details.hidden = false;
+  card.classList.add('is-expanded');
+}
+
+document.getElementById('programsList').addEventListener('click', async (e) => {
+  const applyBtn = e.target.closest('button[data-apply]');
+  if (applyBtn) {
+    await applyPreset(applyBtn.dataset.apply);
+    return;
+  }
+  if (e.target.closest('a')) return;
+  const card = e.target.closest('.program-card[data-card-id]');
+  if (card) await togglePresetCardExpand(card);
+});
+
+document.getElementById('currentProgramCard').addEventListener('click', (e) => {
+  if (e.target.closest('a')) return;
+  toggleCurrentCardExpand();
 });
 
 // ============================================
@@ -700,6 +1032,7 @@ if ('serviceWorker' in navigator) {
 (async () => {
   await initI18n();
   PROGRAM = await loadProgram();
+  await syncCurrentMeta();
   render();
   requestWakeLock();
 })();

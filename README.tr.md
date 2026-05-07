@@ -23,6 +23,7 @@ Bilinçli olarak küçük: ağda toplam ~57 KB. Build adımı yok, framework yok
 - **Kurulum yok.** Bir PWA — iPhone'da: Paylaş → Ana Ekrana Ekle; Android'de: menü → Yükle. Sonrasında native bir uygulama gibi davranıyor: kendi simgesi, tam ekran, üst tarayıcı çubuğu yok.
 - **Çevrimdışı çalışır.** İlk açılışta service worker shell'i önbelleğe alıyor. Salonun WiFi'si ölse de uygulaman ölmez.
 - **Özelleştirilebilir program.** Hazır gelen 6 günlük dambıl bölünmesi sadece başlangıç noktası — Ayarlar'dan her gün için egzersiz ekle, sil, sırala, set/tekrar/mola süresini değiştir.
+- **Program kütüphanesi.** Topluluk tarafından eklenen büyüyen bir program kataloğu (Dambıl 6 gün, Vücut ağırlığı 3 gün, Üst/Alt 4 gün, …). Menü simgesine bas, birini seç, kaldır. Katkı veren koçlar isim + nofollow link kredisi alıyor.
 - **Dışa / içe aktar.** Programını JSON olarak yedekle veya başka bir cihaza taşı.
 - **Mola sayacı.** Mola bittiği an telefon titrer ve ses çıkar.
 - **Wake Lock.** Set sırasında ekran kararmaz.
@@ -63,11 +64,14 @@ Tam mimari [CLAUDE.md](CLAUDE.md)'de belgelendi.
 
 ## Programı özelleştirme
 
-Varsayılan antrenman programı, uygulamanın Ayarlar sayfasında (veya kendi JSON'unu içe aktararak) tamamen düzenleyebileceğin bir JSON dosyasıdır. Format:
+Antrenman programı, uygulamanın Ayarlar sayfasında (veya kendi JSON'unu içe aktararak) tamamen düzenleyebileceğin bir JSON dosyasıdır. Format:
 
 ```json
 {
   "version": 1,
+  "name": "Programım",
+  "description": "İsteğe bağlı tek satırlık özet.",
+  "coach": { "name": "İsteğe bağlı", "url": "https://opsiyonel" },
   "days": {
     "1": [
       { "region": "Chest", "name": "Flat DB Press", "description": "...", "set": 4, "reps": "10", "rest": 90 }
@@ -77,7 +81,18 @@ Varsayılan antrenman programı, uygulamanın Ayarlar sayfasında (veya kendi JS
 }
 ```
 
-`reps` bir string — `"Max"`, `"60s"` veya sayısal değer tutabilsin diye.
+`reps` bir string — `"Max"`, `"60s"` veya sayısal değer tutabilsin diye. Üst seviye metadata (`name`, `description`, `coach`) her yerde isteğe bağlı — varsa uygulama gösterir, yoksa görmezden gelir.
+
+## Programını paylaşmak (katkı sağlamak)
+
+Programs (Programlar) menüsü topluluk tarafından besleniyor. Kendi programını eklemek için repo'yu fork'la ve şu iki dosyayı içeren bir PR aç:
+
+1. **`presets/<senin-id>.json`** — `name`, `description`, `coach: { name, url }` ve `days` alanlarını dolu bir program. [presets/](presets/) klasöründeki hazır dosyalar canlı örnekler.
+2. **[`presets/index.json`](presets/index.json)** içine bir kayıt — aynı `id`, dosya adı, ve aynı name/description/coach (her preset'i tek tek fetch'lemeden listeyi göstermek için index hafif bir kataloğa benziyor; ikisini senkron tutmak gerek).
+
+Coach linkleri otomatik olarak `rel="nofollow noopener"` alıyor — koçun kendi reklamı, SEO ağırlığı taşımıyor; ama programını kullanan herkes adını görüp sitene tıklayabiliyor. Adım adım kontrol listesi: [`presets/README.md`](presets/README.md).
+
+Eşik düşük: kendin de yapacağın gerçek bir program yaz, dürüst metadata doldur, PR aç.
 
 ## Çeviri
 

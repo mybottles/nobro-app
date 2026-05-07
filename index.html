@@ -52,6 +52,16 @@
         <line x1="12" y1="8" x2="12.01" y2="8"/>
       </svg>
     </button>
+    <button class="iconbtn" id="programsBtn" data-i18n-aria-label="ui.programs" aria-label="Programs" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    </button>
     <button class="iconbtn" id="settingsBtn" data-i18n-aria-label="ui.settings" aria-label="Settings" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="3"/>
@@ -108,6 +118,26 @@
           sponsored by <a href="https://bulut.press" target="_blank" rel="noopener">bulutpress</a>
         </p>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="programsModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="programsTitle">
+    <div class="modal-grabber"></div>
+    <div class="modal-header">
+      <h2 id="programsTitle" data-i18n="ui.programs">Programs</h2>
+      <button class="modal-close" data-close data-i18n-aria-label="ui.close" aria-label="Close" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="programs-subtitle" data-i18n="ui.programs_subtitle">Community-curated workout programs. Pick one and start lifting.</p>
+      <div class="program-current" id="currentProgramCard"></div>
+      <div class="programs-list-label" data-i18n="ui.programs_available">Available programs</div>
+      <div class="programs-list" id="programsList"></div>
+      <p class="programs-contribute">
+        <a href="https://github.com/mybottles/nobro-app/tree/main/presets" target="_blank" rel="noopener" data-i18n="ui.programs_contribute">Add your program on GitHub →</a>
+      </p>
     </div>
   </div>
 </div>

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "presets": [
+    {
+      "id": "default",
+      "file": "default.json",
+      "name": "Default Dumbbell 6-Day",
+      "description": "A 6-day push / pull / legs split using only dumbbells. The starter program nobro ships with.",
+      "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" }
+    },
+    {
+      "id": "dumbbell-upper-lower",
+      "file": "dumbbell-upper-lower.json",
+      "name": "Dumbbell Upper / Lower 4-Day",
+      "description": "Four days a week: two upper-body sessions, two lower-body. Heavier compounds, fewer accessories.",
+      "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" }
+    },
+    {
+      "id": "bodyweight-3day",
+      "file": "bodyweight-3day.json",
+      "name": "Bodyweight 3-Day Full-Body",
+      "description": "No equipment, three full-body sessions per week. Built for travel and tight spaces.",
+      "coach": { "name": "Murat Uysal", "url": "https://muratuysal.com" }
+    }
+  ]
+}
