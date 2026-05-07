@@ -112,13 +112,21 @@ A third toolbar button (between About and Settings) opens the Programs modal —
 2. **Adding a new locale:**
    - Drop `locales/{code}.json` matching the shape of `en.json`.
    - Append the code to `SUPPORTED_LOCALES` in `app.js`.
-   - Bump `CACHE` in `sw.js` so existing installs refetch the locale list.
+   - The pre-commit hook will bump `CACHE` in `sw.js` automatically so existing installs refetch the locale list.
 
 ## Service worker
 
 Versioned cache name (`nobro-vN`). On `activate`, old caches are deleted. The pre-cache list (`ASSETS`) includes the shell (`index.html`, `app.css`, `app.js`, manifest, icons) + `locales/en.json` + `presets/index.json` + `presets/default.json`. Other locales and other presets are cached lazily on first fetch.
 
-**Network-first** for content that ships without a cache bump: locale JSONs and any `presets/*.json`. Everything else is cache-first. If you change non-network-first assets (HTML/CSS/JS/icons) and want users to pick them up, bump `CACHE` in `sw.js`.
+**Network-first** for content that ships without a cache bump: locale JSONs and any `presets/*.json`. Everything else is cache-first. The cache version bump is automated — see "Local hooks" below.
+
+The SW is registered with `{ updateViaCache: 'none' }` so the browser bypasses HTTP cache when checking for a new `sw.js`. Without that flag, GitHub Pages' default 4-hour `Cache-Control` on JS files would let the browser serve a stale `sw.js` from disk for hours after a deploy, blocking the install of any new SW version. Don't remove the option.
+
+## Local hooks
+
+`.githooks/pre-commit` auto-bumps `CACHE = 'nobro-vN'` in [sw.js](sw.js) whenever a cached asset (HTML/CSS/JS/manifest/icons/locale JSON/preset JSON) is staged. This invalidates the old SW cache so installed clients pick up the new shell on the next launch.
+
+Enable it once per clone: `git config core.hooksPath .githooks`. Without this config the hook never fires and you'd have to bump `CACHE` by hand.
 
 ## Brand & UX rules
 
@@ -148,7 +156,7 @@ sips -z 180 180 icon-1024.png --out apple-touch-icon.png
 rm icon-1024.png
 ```
 
-After updating any cached asset, bump `CACHE` in [sw.js](sw.js) so installed clients invalidate the old shell on next launch.
+The pre-commit hook (see "Local hooks") bumps `CACHE` in [sw.js](sw.js) automatically when icon files are staged.
 
 ## Conventions
 

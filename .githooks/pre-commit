@@ -1,0 +1,30 @@
+#!/bin/sh
+# Auto-bump nobro-vN in sw.js whenever a cached asset changes.
+# Cache-first assets get stale otherwise; bumping invalidates the old SW cache.
+set -e
+
+CACHE_RE='^(app\.(js|css)|index\.html|manifest\.json|icon-.*\.png|apple-touch-icon\.png|locales/.*\.json|presets/.*\.json|sw\.js)$'
+CHANGED=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "$CACHE_RE" || true)
+[ -z "$CHANGED" ] && exit 0
+
+# If sw.js is the *only* changed file and its diff is just the version bump from
+# a previous run of this hook, don't bump again — avoids infinite re-runs on amends.
+if [ "$CHANGED" = "sw.js" ]; then
+  if git diff --cached -- sw.js | grep -E '^[-+]' | grep -vE '^(\+\+\+|---|[-+]const CACHE = ' >/dev/null; then
+    : # other lines changed too, fall through and bump
+  else
+    exit 0
+  fi
+fi
+
+CUR=$(grep -oE "nobro-v[0-9]+" sw.js | head -1 | sed 's/nobro-v//')
+if [ -z "$CUR" ]; then
+  echo "pre-commit: could not find 'nobro-vN' in sw.js" >&2
+  exit 1
+fi
+NEXT=$((CUR + 1))
+
+# Portable in-place sed (BSD/macOS + GNU).
+sed -i.bak "s/nobro-v$CUR/nobro-v$NEXT/" sw.js && rm -f sw.js.bak
+git add sw.js
+echo "pre-commit: sw.js cache bumped nobro-v$CUR → nobro-v$NEXT"
