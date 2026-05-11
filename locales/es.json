@@ -69,7 +69,19 @@
     "programs_exercises": "ejercicios",
     "programs_sets": "sets",
     "programs_days": "días",
-    "programs_rest_day": "descanso"
+    "programs_rest_day": "descanso",
+    "today_title": "Progreso de hoy",
+    "today_status_idle": "Sin empezar",
+    "today_status_active": "En curso",
+    "today_status_done": "Completado",
+    "today_status_rest": "Día de descanso",
+    "today_sets_done": "Series",
+    "today_exercises_done": "Ejercicios",
+    "today_elapsed": "Tiempo",
+    "today_remaining_sets": "Quedan {n} series",
+    "today_ex_pending": "pendiente",
+    "today_ex_active": "ahora",
+    "today_ex_done": "hecho"
   },
   "duration": {
     "h_m": "{h}h {m}m",

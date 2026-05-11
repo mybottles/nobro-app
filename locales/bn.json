@@ -69,7 +69,19 @@
     "programs_exercises": "ব্যায়াম",
     "programs_sets": "সেট",
     "programs_days": "দিন",
-    "programs_rest_day": "বিশ্রাম"
+    "programs_rest_day": "বিশ্রাম",
+    "today_title": "আজকের অগ্রগতি",
+    "today_status_idle": "শুরু হয়নি",
+    "today_status_active": "চলছে",
+    "today_status_done": "শেষ",
+    "today_status_rest": "বিশ্রাম দিন",
+    "today_sets_done": "সেট",
+    "today_exercises_done": "ব্যায়াম",
+    "today_elapsed": "অতিবাহিত",
+    "today_remaining_sets": "{n} সেট বাকি",
+    "today_ex_pending": "বাকি",
+    "today_ex_active": "এখন",
+    "today_ex_done": "শেষ"
   },
   "duration": {
     "h_m": "{h}ঘ {m}মি",

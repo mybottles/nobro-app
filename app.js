@@ -257,7 +257,13 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const s = JSON.parse(raw);
-      if (s.tarih === bugunKey()) return s;
+      if (s.tarih === bugunKey()) {
+        if (typeof s.aktifMs !== 'number') s.aktifMs = 0;
+        if (!('aktifSetBaslangic' in s)) s.aktifSetBaslangic = null;
+        if (!('aktifDinlenmeBaslangic' in s)) s.aktifDinlenmeBaslangic = null;
+        if (!('aktifDinlenmeLimit' in s)) s.aktifDinlenmeLimit = null;
+        return s;
+      }
     }
   } catch (e) {}
   return {
@@ -268,7 +274,35 @@ function loadState() {
     setBitisleri: [],
     baslangic: null,
     bitis: null,
+    aktifMs: 0,
+    aktifSetBaslangic: null,
+    aktifDinlenmeBaslangic: null,
+    aktifDinlenmeLimit: null,
   };
+}
+
+// Active workout time = sum of every set's START→DONE + every rest's actual
+// elapsed (clamped to its configured length). Set/rest in-flight segments are
+// added live so the modal reflects current state without persisted ticks.
+function aktifMsLive() {
+  let total = state.aktifMs || 0;
+  if (state.aktifSetBaslangic) {
+    total += Date.now() - state.aktifSetBaslangic;
+  } else if (state.aktifDinlenmeBaslangic) {
+    const elapsed = Date.now() - state.aktifDinlenmeBaslangic;
+    const limit = state.aktifDinlenmeLimit;
+    total += (limit != null) ? Math.min(elapsed, limit) : elapsed;
+  }
+  return total;
+}
+
+function flushDinlenme(naturalEnd) {
+  if (!state.aktifDinlenmeBaslangic) return;
+  const limit = state.aktifDinlenmeLimit || 0;
+  const elapsed = Date.now() - state.aktifDinlenmeBaslangic;
+  state.aktifMs = (state.aktifMs || 0) + (naturalEnd ? limit : Math.min(elapsed, limit));
+  state.aktifDinlenmeBaslangic = null;
+  state.aktifDinlenmeLimit = null;
 }
 
 function saveState(s) {
@@ -407,8 +441,15 @@ function render() {
 }
 
 function onStart() {
+  const now = Date.now();
+  // If app was closed during a rest, that rest never reached the skip button
+  // nor its natural end — flush it as full configured rest before this START.
+  if (state.aktifDinlenmeBaslangic) flushDinlenme(true);
+  // A lingering aktifSetBaslangic means the previous set was abandoned (app
+  // reload mid-set). Drop it — pressing START means "I'm starting now."
+  state.aktifSetBaslangic = now;
   if (!state.baslangic) {
-    state.baslangic = Date.now();
+    state.baslangic = now;
   }
   if (!audioCtx) {
     try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
@@ -445,14 +486,20 @@ function onDone() {
     clearInterval(timerInterval);
     timerInterval = null;
   }
+  const now = Date.now();
   const program = PROGRAM[state.gun];
   const item = program[state.hareketIdx];
+
+  if (state.aktifSetBaslangic) {
+    state.aktifMs = (state.aktifMs || 0) + (now - state.aktifSetBaslangic);
+    state.aktifSetBaslangic = null;
+  }
 
   state.setBitisleri.push({
     hareketIdx: state.hareketIdx,
     name: item.name,
     setIdx: state.setIdx,
-    ts: Date.now(),
+    ts: now,
   });
 
   state.setIdx++;
@@ -462,12 +509,14 @@ function onDone() {
   }
 
   if (state.hareketIdx >= program.length) {
-    state.bitis = Date.now();
+    state.bitis = now;
     saveState(state);
     render();
     return;
   }
 
+  state.aktifDinlenmeBaslangic = now;
+  state.aktifDinlenmeLimit = (item.rest || 0) * 1000;
   saveState(state);
   startDinlenme(item.rest);
 }
@@ -487,6 +536,8 @@ function startDinlenme(saniye) {
     document.getElementById('skipBtn').addEventListener('click', () => {
       clearInterval(timerInterval);
       timerInterval = null;
+      flushDinlenme(false);
+      saveState(state);
       render();
     });
   }
@@ -497,6 +548,8 @@ function startDinlenme(saniye) {
     if (kalan <= 0) {
       clearInterval(timerInterval);
       timerInterval = null;
+      flushDinlenme(true);
+      saveState(state);
       beep();
       render();
       return;
@@ -512,7 +565,7 @@ function renderOzet(program) {
     sayim[k] = (sayim[k] || 0) + 1;
   });
 
-  const sure = state.bitis && state.baslangic ? state.bitis - state.baslangic : 0;
+  const sure = state.aktifMs || 0;
   const toplamSet = state.setBitisleri.length;
 
   let rows = '';
@@ -555,6 +608,112 @@ function renderOzet(program) {
   if (browseBtn) browseBtn.addEventListener('click', () => openPrograms());
 }
 
+function openToday() {
+  renderTodayModal();
+  openModal('todayModal');
+}
+
+function renderTodayModal() {
+  const body = document.getElementById('todayBody');
+  if (!body) return;
+
+  const program = PROGRAM[state.gun] || [];
+  const dayLine = t('ui.day_label', { day: dayShort(state.gun), n: state.gun });
+
+  if (program.length === 0) {
+    const tomorrow = state.gun === 7 ? 1 : state.gun + 1;
+    body.innerHTML = `
+      <div class="today-head">
+        <div class="today-day">${escapeHtml(dayLine)}</div>
+        <span class="today-status today-status-rest">${escapeHtml(t('ui.today_status_rest'))}</span>
+      </div>
+      <div class="today-empty">
+        <div class="today-empty-emoji">${escapeHtml(t('ui.rest_day_emoji'))}</div>
+        <div>${escapeHtml(t('ui.rest_day'))}</div>
+        <div class="today-empty-next">${escapeHtml(t('ui.rest_day_tomorrow', { day: dayShort(tomorrow) }))}</div>
+      </div>
+    `;
+    return;
+  }
+
+  const sayim = {};
+  state.setBitisleri.forEach(b => {
+    sayim[b.hareketIdx] = (sayim[b.hareketIdx] || 0) + 1;
+  });
+
+  const totalSets = program.reduce((acc, ex) => acc + (ex.set || 0), 0);
+  const doneSets = state.setBitisleri.length;
+  const remainingSets = Math.max(0, totalSets - doneSets);
+  const totalExercises = program.length;
+  const doneExercises = program.reduce((acc, ex, idx) => acc + ((sayim[idx] || 0) >= ex.set ? 1 : 0), 0);
+
+  const isComplete = state.hareketIdx >= program.length;
+  const hasStarted = !!state.baslangic;
+  let statusKey, statusClass;
+  if (isComplete) { statusKey = 'ui.today_status_done'; statusClass = 'today-status-done'; }
+  else if (hasStarted) { statusKey = 'ui.today_status_active'; statusClass = 'today-status-active'; }
+  else { statusKey = 'ui.today_status_idle'; statusClass = 'today-status-idle'; }
+
+  const elapsedMs = aktifMsLive();
+
+  const stats = `
+    <div class="today-stats">
+      <div class="today-stat">
+        <div class="today-stat-val">${doneSets}<span class="today-stat-of">/${totalSets}</span></div>
+        <div class="today-stat-label">${escapeHtml(t('ui.today_sets_done'))}</div>
+      </div>
+      <div class="today-stat">
+        <div class="today-stat-val">${doneExercises}<span class="today-stat-of">/${totalExercises}</span></div>
+        <div class="today-stat-label">${escapeHtml(t('ui.today_exercises_done'))}</div>
+      </div>
+      <div class="today-stat">
+        <div class="today-stat-val">${hasStarted ? escapeHtml(fmtSure(elapsedMs)) : '—'}</div>
+        <div class="today-stat-label">${escapeHtml(t('ui.today_elapsed'))}</div>
+      </div>
+    </div>
+  `;
+
+  let rows = '';
+  program.forEach((ex, idx) => {
+    const done = sayim[idx] || 0;
+    const total = ex.set || 0;
+    let stateClass, stateLabel;
+    if (done >= total) { stateClass = 'is-done'; stateLabel = t('ui.today_ex_done'); }
+    else if (idx === state.hareketIdx) { stateClass = 'is-active'; stateLabel = t('ui.today_ex_active'); }
+    else { stateClass = 'is-pending'; stateLabel = t('ui.today_ex_pending'); }
+
+    rows += `
+      <div class="today-ex-row ${stateClass}">
+        <div class="today-ex-marker" aria-hidden="true"></div>
+        <div class="today-ex-body">
+          <div class="today-ex-region">${escapeHtml(ex.region || '')}</div>
+          <div class="today-ex-name">${escapeHtml(ex.name || '')}</div>
+          <div class="today-ex-meta">${escapeHtml(t('ui.rep_set', { reps: ex.reps, set: Math.min(done + 1, total), total }))} · ${ex.rest}s</div>
+        </div>
+        <div class="today-ex-progress">
+          <div class="today-ex-count">${done}<span class="today-stat-of">/${total}</span></div>
+          <div class="today-ex-state">${escapeHtml(stateLabel)}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  let remainingLine = '';
+  if (!isComplete && remainingSets > 0) {
+    remainingLine = `<div class="today-remaining">${escapeHtml(t('ui.today_remaining_sets', { n: remainingSets }))}</div>`;
+  }
+
+  body.innerHTML = `
+    <div class="today-head">
+      <div class="today-day">${escapeHtml(dayLine)}</div>
+      <span class="today-status ${statusClass}">${escapeHtml(t(statusKey))}</span>
+    </div>
+    ${stats}
+    ${remainingLine}
+    <div class="today-list">${rows}</div>
+  `;
+}
+
 window.addEventListener('beforeunload', () => {
   if (timerInterval) clearInterval(timerInterval);
   saveState(state);
@@ -572,6 +731,7 @@ function closeModal(m) { m.hidden = true; }
 document.getElementById('aboutBtn').addEventListener('click', () => openModal('aboutModal'));
 document.getElementById('programsBtn').addEventListener('click', () => openPrograms());
 document.getElementById('settingsBtn').addEventListener('click', () => openSettings());
+document.getElementById('dayInfo').addEventListener('click', () => openToday());
 
 document.getElementById('shareBtn').addEventListener('click', async () => {
   const url = 'https://nobro.app/';

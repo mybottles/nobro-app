@@ -69,7 +69,19 @@
     "programs_exercises": "تمرين",
     "programs_sets": "مجموعة",
     "programs_days": "يوم",
-    "programs_rest_day": "راحة"
+    "programs_rest_day": "راحة",
+    "today_title": "تقدّم اليوم",
+    "today_status_idle": "لم يبدأ",
+    "today_status_active": "قيد التنفيذ",
+    "today_status_done": "اكتمل",
+    "today_status_rest": "يوم راحة",
+    "today_sets_done": "المجموعات",
+    "today_exercises_done": "التمارين",
+    "today_elapsed": "المنقضي",
+    "today_remaining_sets": "متبقّي {n} مجموعة",
+    "today_ex_pending": "بانتظار",
+    "today_ex_active": "الآن",
+    "today_ex_done": "تم"
   },
   "duration": {
     "h_m": "{h}س {m}د",

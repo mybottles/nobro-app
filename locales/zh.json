@@ -69,7 +69,19 @@
     "programs_exercises": "动作",
     "programs_sets": "组",
     "programs_days": "天",
-    "programs_rest_day": "休息"
+    "programs_rest_day": "休息",
+    "today_title": "今日进度",
+    "today_status_idle": "未开始",
+    "today_status_active": "进行中",
+    "today_status_done": "已完成",
+    "today_status_rest": "休息日",
+    "today_sets_done": "组",
+    "today_exercises_done": "动作",
+    "today_elapsed": "用时",
+    "today_remaining_sets": "还剩 {n} 组",
+    "today_ex_pending": "待开始",
+    "today_ex_active": "进行中",
+    "today_ex_done": "完成"
   },
   "duration": {
     "h_m": "{h}小时 {m}分",

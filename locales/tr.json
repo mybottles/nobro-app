@@ -69,7 +69,19 @@
     "programs_exercises": "hareket",
     "programs_sets": "set",
     "programs_days": "gün",
-    "programs_rest_day": "dinlenme"
+    "programs_rest_day": "dinlenme",
+    "today_title": "Günün ilerlemesi",
+    "today_status_idle": "Henüz başlamadı",
+    "today_status_active": "Devam ediyor",
+    "today_status_done": "Tamamlandı",
+    "today_status_rest": "Dinlenme günü",
+    "today_sets_done": "Set",
+    "today_exercises_done": "Hareket",
+    "today_elapsed": "Geçen süre",
+    "today_remaining_sets": "{n} set kaldı",
+    "today_ex_pending": "bekliyor",
+    "today_ex_active": "şimdi",
+    "today_ex_done": "bitti"
   },
   "duration": {
     "h_m": "{h}s {m}d",

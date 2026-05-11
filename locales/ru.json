@@ -69,7 +69,19 @@
     "programs_exercises": "упражнений",
     "programs_sets": "сетов",
     "programs_days": "дн.",
-    "programs_rest_day": "отдых"
+    "programs_rest_day": "отдых",
+    "today_title": "Прогресс дня",
+    "today_status_idle": "Не начато",
+    "today_status_active": "Идёт",
+    "today_status_done": "Завершено",
+    "today_status_rest": "День отдыха",
+    "today_sets_done": "Подходы",
+    "today_exercises_done": "Упражнения",
+    "today_elapsed": "Прошло",
+    "today_remaining_sets": "Осталось {n} подходов",
+    "today_ex_pending": "позже",
+    "today_ex_active": "сейчас",
+    "today_ex_done": "готово"
   },
   "duration": {
     "h_m": "{h}ч {m}м",

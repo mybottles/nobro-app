@@ -69,7 +69,19 @@
     "programs_exercises": "व्यायाम",
     "programs_sets": "सेट",
     "programs_days": "दिन",
-    "programs_rest_day": "विश्राम"
+    "programs_rest_day": "विश्राम",
+    "today_title": "आज की प्रगति",
+    "today_status_idle": "शुरू नहीं",
+    "today_status_active": "जारी है",
+    "today_status_done": "पूरा",
+    "today_status_rest": "विश्राम दिवस",
+    "today_sets_done": "सेट",
+    "today_exercises_done": "व्यायाम",
+    "today_elapsed": "बीता समय",
+    "today_remaining_sets": "{n} सेट बाकी",
+    "today_ex_pending": "बाकी",
+    "today_ex_active": "अभी",
+    "today_ex_done": "पूरा"
   },
   "duration": {
     "h_m": "{h}घं {m}मि",

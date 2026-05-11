@@ -69,7 +69,19 @@
     "programs_exercises": "gerakan",
     "programs_sets": "set",
     "programs_days": "hari",
-    "programs_rest_day": "istirahat"
+    "programs_rest_day": "istirahat",
+    "today_title": "Progres hari ini",
+    "today_status_idle": "Belum mulai",
+    "today_status_active": "Berlangsung",
+    "today_status_done": "Selesai",
+    "today_status_rest": "Hari istirahat",
+    "today_sets_done": "Set",
+    "today_exercises_done": "Gerakan",
+    "today_elapsed": "Berjalan",
+    "today_remaining_sets": "Sisa {n} set",
+    "today_ex_pending": "menunggu",
+    "today_ex_active": "sekarang",
+    "today_ex_done": "selesai"
   },
   "duration": {
     "h_m": "{h}j {m}m",
